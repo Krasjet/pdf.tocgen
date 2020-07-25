@@ -5,7 +5,8 @@ description = "a work in progress"
 authors = ["krasjet"]
 license = "MIT"
 packages = [
-  { include = "pdfbm" }
+  { include = "pdfbm" },
+  { include = "pdfxmeta" }
 ]
 
 [tool.poetry.dependencies]
