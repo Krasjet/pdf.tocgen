@@ -1,9 +1,9 @@
 .PHONY: all clean
 
-all: level2.pdf
+all: level2.pdf hastoc.pdf
 
 %.pdf: %.tex
 	latexmk -pdf $<
 
 clean:
-	rm -f *.aux *.dvi *.fdb_latexmk *.fls *.log *.pdf
+	rm -f *.aux *.dvi *.fdb_latexmk *.fls *.log *.pdf *.out
