@@ -4,7 +4,7 @@ import fitz
 
 
 class ExtractMetaTest(unittest.TestCase):
-    def test_extract_meta(self):
+    def test_extract_meta_basic(self):
         doc = fitz.open('./tests/files/level2.pdf')
         meta = extract_meta(doc, "Section One", 1)
         self.assertEqual(len(meta), 1)
@@ -45,3 +45,20 @@ class ExtractMetaTest(unittest.TestCase):
 
         meta = extract_meta(doc, "Sectoin", 1)
         self.assertEqual(len(meta), 0, "should match none")
+
+    def test_extract_meta_outofrange(self):
+        doc = fitz.open('./tests/files/level2.pdf')
+
+        meta = extract_meta(doc, "Section One", 0)
+        self.assertEqual(len(meta), 0)
+
+        meta = extract_meta(doc, "Section One", 7)
+        self.assertEqual(len(meta), 0)
+
+    def test_extract_meta_all(self):
+        doc = fitz.open('./tests/files/level2.pdf')
+
+        meta = extract_meta(doc, "The End")
+        self.assertEqual(len(meta), 1)
+        self.assertIn('font', meta[0])
+        self.assertIn('CMBX12', meta[0]['font'])
