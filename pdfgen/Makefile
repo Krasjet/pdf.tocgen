@@ -3,7 +3,7 @@
 all: level2.pdf
 
 %.pdf: %.tex
-	latexmk $<
+	latexmk -pdf $<
 
 clean:
 	rm -f *.aux *.dvi *.fdb_latexmk *.fls *.log *.pdf
