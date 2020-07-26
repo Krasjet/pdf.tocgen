@@ -1,6 +1,7 @@
 poetry.lock
 dist
 __pycache__
+*.egg-info
 *.aux
 *.dvi
 *.fdb_latexmk
