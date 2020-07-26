@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "pdf.bookmark"
+name = "pdf.tocgen"
 version = "0.1.0"
 description = "a work in progress"
 authors = ["krasjet"]
 license = "GPL-3.0-only"
 packages = [
-  { include = "pdfbm" },
+  { include = "pdftocgen" },
   { include = "pdfxmeta" },
   { include = "fitzutils" }
 ]
@@ -22,6 +22,7 @@ mamba = "^0.11.0"
 
 [tool.poetry.scripts]
 pdfxmeta = "pdfxmeta.app:main"
+pdftocgen = "pdftocgen.app:main"
 
 [build-system]
 requires = ["poetry>=0.12"]

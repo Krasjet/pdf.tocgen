@@ -6,4 +6,7 @@ all: level2.pdf hastoc.pdf
 	latexmk -pdf $<
 
 clean:
-	rm -f *.aux *.dvi *.fdb_latexmk *.fls *.log *.pdf *.out
+	rm -f *.aux *.dvi *.fdb_latexmk *.fls *.log *.out
+
+nuke: clean
+	rm -f *.pdf

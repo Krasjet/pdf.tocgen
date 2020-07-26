@@ -17,7 +17,7 @@ def getargs() -> Namespace:
 
     parser.add_argument('fname',
                         metavar='doc.pdf',
-                        help="name of the input pdf file")
+                        help="path to the input pdf file")
     parser.add_argument('needle',
                         help="the string to search for")
     parser.add_argument('-p', '--page',

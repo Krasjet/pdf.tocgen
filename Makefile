@@ -7,7 +7,7 @@ test: # run tests
 	@poetry run mamba --format=documentation ./spec
 
 lint: # run lint
-	@poetry run pylint ./spec ./pdfxmeta ./pdfbm ./fitzutils
+	@poetry run pylint ./spec ./pdfxmeta ./pdftocgen ./fitzutils
 
 xmeta-demo: # a demo of pdfxmeta
 	@poetry run pdfxmeta ./spec/files/level2.pdf "Section"
