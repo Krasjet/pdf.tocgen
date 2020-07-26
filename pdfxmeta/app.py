@@ -1,14 +1,11 @@
 """The executable of pdfxmeta"""
 
-import pdfxmeta
-import fitz
 import argparse
+import pdfxmeta
 import sys
 
 from argparse import Namespace
-from typing import List
 from fitzutils import open_pdf
-from typing import Tuple
 from textwrap import indent
 
 
@@ -32,8 +29,10 @@ def getargs() -> Namespace:
 
     return parser.parse_args()
 
+
 def print_result(text: str, meta: str) -> str:
     return f"{text}:\n{indent(pdfxmeta.dump_meta(meta), '    ')}"
+
 
 def uncurry(f):
     """(a -> b -> c) -> (a, b) -> c"""
@@ -41,16 +40,16 @@ def uncurry(f):
         return f(*args)
     return h
 
+
 def main():
     args = getargs()
 
     with open_pdf(args.fname) as doc:
-        meta = pdfxmeta.extract_meta(doc, args.needle, args.page, args.ignore_case)
+        meta = pdfxmeta.extract_meta(
+            doc, args.needle, args.page, args.ignore_case)
 
         # nothing found
         if len(meta) == 0:
             sys.exit(1)
 
         print('\n'.join(map(uncurry(print_result), meta)))
-
-

@@ -1,15 +1,16 @@
-import fitz
+"""Extract metadata for a string in a pdf file"""
+
 from toml.encoder import _dump_str, _dump_float
 
-from fitz import Document, Page, TextPage
+from fitz import Document, Page
 from typing import Optional, List, Tuple
 
 
-def extract_meta( doc: Document
-                , needle: str
-                , page: Optional[int] = None
-                , ign_case: bool = False
-                ) -> List[Tuple[str, dict]]:
+def extract_meta(doc: Document,
+                 needle: str,
+                 page: Optional[int] = None,
+                 ign_case: bool = False
+                 ) -> List[Tuple[str, dict]]:
     """Extract meta for `needle` on `page` in a pdf document
 
     Arguments
@@ -24,8 +25,8 @@ def extract_meta( doc: Document
     if page is None:
         pages = doc.pages()
     elif 1 <= page <= doc.pageCount:
-        pages = [doc[page-1]]
-    else: # page out of range
+        pages = [doc[page - 1]]
+    else:  # page out of range
         return result
 
     # we could parallelize this, but I don't see a reason
@@ -35,10 +36,11 @@ def extract_meta( doc: Document
 
     return result
 
-def search_in_page( needle: str
-                  , page: Page
-                  , ign_case: bool = False
-                  ) -> List[Tuple[str, dict]]:
+
+def search_in_page(needle: str,
+                   page: Page,
+                   ign_case: bool = False
+                   ) -> List[Tuple[str, dict]]:
     """Search for `text` in `page` and extract meta
 
     Arguments
@@ -70,9 +72,11 @@ def search_in_page( needle: str
 
     return result
 
+
 def to_bools(var: int) -> str:
     """Convert int to lowercase bool string"""
     return str(var != 0).lower()
+
 
 def dump_meta(spn: dict) -> str:
     """Dump the span dict from PyMuPDF to TOML compatible string"""
@@ -98,4 +102,3 @@ def dump_meta(spn: dict) -> str:
     result.append(f"bbox.bottom = {_dump_float(bbox[3])}")
 
     return '\n'.join(result)
-

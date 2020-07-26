@@ -6,9 +6,9 @@ import sys
 
 
 @contextmanager
-def open_pdf( path: str
-            , exit_on_error: bool = True
-            ) -> ContextManager[Optional[fitz.Document]]:
+def open_pdf(path: str,
+             exit_on_error: bool = True
+             ) -> ContextManager[Optional[fitz.Document]]:
     """A context manager for fitz Document
 
     This context manager will take care of the error handling when creating a
