@@ -1,21 +1,21 @@
 [[filter]]
 level = 1
-size = 14.346199989318848
 font.name = "CMBX12"
+font.size = 14.346199989318848
+font.size_tolerance = 0.01
 font.superscript = false
 font.italic = false
 font.serif = true
 font.monospace = false
 font.bold = true
-tolerance.size = 0.01
 
 [[filter]]
 level = 2
-size = 9.962599754333496
 font.name = "CMBX10"
+font.size = 9.962599754333496
+font.size_tolerance = 0.01
 font.superscript = false
 font.italic = false
 font.serif = true
 font.monospace = false
 font.bold = true
-tolerance.size = 0.01

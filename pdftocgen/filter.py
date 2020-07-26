@@ -1,4 +1,4 @@
-"""Filters on span dictionary
+"""Filter on span dictionaries
 
 This module contains the internal representation of filters, which are used to
 test if a span should be included in the ToC.
@@ -9,13 +9,26 @@ import re
 from typing import Optional
 from re import Pattern
 
-class Font:
+DEF_TOLERANCE: float = 1e-5
+
+
+def admits_float(expect: Optional[float],
+                 actual: Optional[float],
+                 tolerance: float) -> bool:
+    """Check if a float should be admitted by a filter"""
+    return (expect is None) or \
+           (actual is not None and abs(expect - actual) <= tolerance)
+
+class FontFilter:
     """Filter on font attributes"""
     name: Pattern
+    size: Optional[float]
+    size_tolerance: float
+    color: Optional[int]
     flags: int
-    # besides the usual true (1) and false (0), we have another state--unset (x),
-    # where the truth table would be
-    # a b
+    # besides the usual true (1) and false (0), we have another state,
+    # unset (x), where the truth table would be
+    # a b diff?
     # 0 0 0
     # 0 1 1
     # 1 0 1
@@ -41,13 +54,11 @@ class Font:
     # 1 0 0           <- ignored
     ign_mask: int
 
-    def __init__(self, font_dict: Optional[dict]):
-        if font_dict is None:
-            self.name = re.compile("")
-            self.flags = 0
-            self.ign_mask = 0
-            return
+    def __init__(self, font_dict: dict):
         self.name = re.compile(font_dict.get('name', ""))
+        self.size = font_dict.get('size')
+        self.size_tolerance = font_dict.get('size_tolerance', DEF_TOLERANCE)
+        self.color = font_dict.get('color')
         # some branchless trick
         # x * True = x
         # x * False = 0
@@ -69,9 +80,15 @@ class Font:
         Argument
           spn: the span dict to be checked
         Returns
-          False if the spn doesn't match current font attribute
+          False if the span doesn't match current font attribute
         """
-        if not self.name.search(spn.get("font", "")):
+        if not self.name.search(spn.get('font', "")):
+            return False
+
+        if self.color is not None and self.color != spn.get('color'):
+            return False
+
+        if not admits_float(self.size, spn.get('size'), self.size_tolerance):
             return False
 
         flags = spn.get('flags', ~self.flags)
@@ -79,33 +96,43 @@ class Font:
         return not (flags ^ self.flags) & self.ign_mask
 
 
-
-class BoundingBox:
-    """Filter on bounding box"""
+class BoundingBoxFilter:
+    """Filter on bounding boxes"""
     left: Optional[float]
     top: Optional[float]
     right: Optional[float]
     bottom: Optional[float]
-    tolerance: float
+    tolernace: float
 
-    def __init__(self, bbox_dict: Optional[dict], tolerance: float):
-        if bbox_dict is None:
-            return
+    def __init__(self, bbox_dict: dict):
         self.left = bbox_dict.get('left')
         self.top = bbox_dict.get('top')
         self.right = bbox_dict.get('right')
         self.bottom = bbox_dict.get('bottom')
-        self.tolerance = tolerance
+        self.tolerance = bbox_dict.get('tolerance', DEF_TOLERANCE)
+
+    def admits(self, spn: dict) -> bool:
+        """Check if the bounding box admit the span
+
+        Argument
+          spn: the span dict to be checked
+        Returns
+          False if the span doesn't match current bounding box setting
+        """
+        bbox = spn.get('bbox', (None, None, None, None))
+        return (admits_float(self.left, bbox[0], self.tolerance) and
+                admits_float(self.top, bbox[1], self.tolerance) and
+                admits_float(self.right, bbox[2], self.tolerance) and
+                admits_float(self.bottom, bbox[3], self.tolerance))
 
 
 class ToCFilter:
-    """The overall filter on span dictionary"""
+    """Filter on span dictionary to pick out titles in the ToC"""
+
+    # The level of the title, strictly > 0
     level: int
-    size: Optional[float]
-    size_tolerance: Optional[float]
-    color: Optional[int]
-    font: Font
-    bbox: BoundingBox
+    font: FontFilter
+    bbox: BoundingBoxFilter
 
     def __init__(self, fltr_dict: dict):
         self.level = fltr_dict.get('level')
@@ -115,10 +142,15 @@ class ToCFilter:
         if self.level < 1:
             raise ValueError("level must be >= 1")
 
-        tol = fltr_dict.get('tolerance', {})
+        self.font = FontFilter(fltr_dict.get('font', {}))
+        self.bbox = BoundingBoxFilter(fltr_dict.get('bbox', {}))
 
-        self.size = fltr_dict.get('size')
-        self.size_tolerance = tol.get('size', 1e-5)
-        self.color = fltr_dict.get('color')
-        self.font = Font(fltr_dict.get('font'))
-        self.bbox = BoundingBox(fltr_dict.get('bbox'), tol.get('bbox', 1e-5))
+    def admits(self, spn: dict) -> bool:
+        """Check if the filter admit the span
+
+        Argument
+          spn: the span dict to be checked
+        Returns
+          False if the span doesn't match the filter
+        """
+        return self.font.admits(spn) and self.bbox.admits(spn)

@@ -23,14 +23,18 @@ def getargs() -> Namespace:
     parser.add_argument('-p', '--page',
                         action='store',
                         type=int,
-                        help="specify the page in which the string occurs (1-based index)")
-    parser.add_argument('-i', '--ignore-case', action='store_true',
-                        help="when flag is set, search will be case-insensitive")
+                        help="specify the page in which the string "
+                             "occurs (1-based index)")
+    parser.add_argument('-i', '--ignore-case',
+                        action='store_true',
+                        help="when flag is set, search will be "
+                        "case-insensitive")
 
     return parser.parse_args()
 
 
 def print_result(text: str, meta: str) -> str:
+    """pretty print results in a structured manner"""
     return f"{text}:\n{indent(pdfxmeta.dump_meta(meta), '    ')}"
 
 

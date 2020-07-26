@@ -82,9 +82,9 @@ def dump_meta(spn: dict) -> str:
     """Dump the span dict from PyMuPDF to TOML compatible string"""
     result = []
 
-    result.append(f"size = {_dump_float(spn['size'])}")
-    result.append(f"color = {spn['color']:#08x}")
     result.append(f"font.name = {_dump_str(spn['font'])}")
+    result.append(f"font.size = {_dump_float(spn['size'])}")
+    result.append(f"font.color = {spn['color']:#08x}")
 
     flags = spn['flags']
 
