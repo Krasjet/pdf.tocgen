@@ -56,10 +56,10 @@ def search_in_page(needle: str,
 
     page_meta = page.getTextPage().extractDICT()
 
-    # we are using get(key, {}) to bypass any missing key errors
-    for blk in page_meta.get('blocks', {}):
-        for ln in blk.get('lines', {}):
-            for spn in ln.get('spans', {}):
+    # we are using get(key, []) to bypass any missing key errors
+    for blk in page_meta.get('blocks', []):
+        for ln in blk.get('lines', []):
+            for spn in ln.get('spans', []):
                 text = spn.get('text', "")
                 if ign_case:
                     text = text.casefold()
