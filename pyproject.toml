@@ -6,7 +6,8 @@ authors = ["krasjet"]
 license = "GPL-3.0-only"
 packages = [
   { include = "pdfbm" },
-  { include = "pdfxmeta" }
+  { include = "pdfxmeta" },
+  { include = "fitzutils" }
 ]
 
 [tool.poetry.dependencies]
@@ -14,6 +15,9 @@ python = "^3.8"
 PyMuPDF = "^1.17.4"
 
 [tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+pdfxmeta = "pdfxmeta.app:main"
 
 [build-system]
 requires = ["poetry>=0.12"]

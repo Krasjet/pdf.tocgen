@@ -10,7 +10,7 @@ def extract_meta( doc: Document
                 ) -> List[dict]:
     """Extract meta for `needle` on `page` in a pdf document
 
-    Arguments:
+    Arguments
       doc: document from pymupdf
       needle: the text to search for
       page: page number (1-based index), if None is given, search for the
@@ -39,7 +39,7 @@ def search_in_page( needle: str
                   ) -> List[dict]:
     """Search for `text` in `page` and extract meta
 
-    Arguments:
+    Arguments
       needle: the text to search for
       page: page number (1-based index)
       ign_case: ignore case?

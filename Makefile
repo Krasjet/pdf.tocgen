@@ -6,5 +6,8 @@
 test: # run tests
 	poetry run python -m unittest discover
 
+xmeta-demo: # a demo of pdfxmeta
+	poetry run pdfxmeta ./tests/files/level2.pdf "Section"
+
 install: # set up dependencies
 	poetry install

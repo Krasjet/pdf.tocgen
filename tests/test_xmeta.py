@@ -1,18 +1,23 @@
-import unittest
 from pdfxmeta import extract_meta
+
+import unittest
 import fitz
+import os
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
+level2_path = os.path.join(dirpath, "files/level2.pdf")
 
 
 class ExtractMetaTest(unittest.TestCase):
     def test_extract_meta_basic(self):
-        doc = fitz.open('./tests/files/level2.pdf')
+        doc = fitz.open(level2_path)
         meta = extract_meta(doc, "Section One", 1)
         self.assertEqual(len(meta), 1)
         self.assertIn('font', meta[0])
         self.assertIn('CMBX12', meta[0]['font'])
 
     def test_extract_meta_ign_case(self):
-        doc = fitz.open('./tests/files/level2.pdf')
+        doc = fitz.open(level2_path)
         #
         meta = extract_meta(doc, "section one", 1, True)
         self.assertEqual(len(meta), 1, "ignore case should match lowercase")
@@ -29,7 +34,7 @@ class ExtractMetaTest(unittest.TestCase):
                          "without ignore case, lowercase shouldn't match anything")
 
     def test_extract_meta_multiple(self):
-        doc = fitz.open('./tests/files/level2.pdf')
+        doc = fitz.open(level2_path)
 
         meta = extract_meta(doc, "Section", 1)
         self.assertEqual(len(meta), 2, "should match 2 instances")
@@ -41,13 +46,13 @@ class ExtractMetaTest(unittest.TestCase):
         self.assertIn('CMBX12', meta[1]['font'])
 
     def test_extract_meta_none(self):
-        doc = fitz.open('./tests/files/level2.pdf')
+        doc = fitz.open(level2_path)
 
         meta = extract_meta(doc, "Sectoin", 1)
         self.assertEqual(len(meta), 0, "should match none")
 
     def test_extract_meta_outofrange(self):
-        doc = fitz.open('./tests/files/level2.pdf')
+        doc = fitz.open(level2_path)
 
         meta = extract_meta(doc, "Section One", 0)
         self.assertEqual(len(meta), 0)
@@ -56,7 +61,7 @@ class ExtractMetaTest(unittest.TestCase):
         self.assertEqual(len(meta), 0)
 
     def test_extract_meta_all(self):
-        doc = fitz.open('./tests/files/level2.pdf')
+        doc = fitz.open(level2_path)
 
         meta = extract_meta(doc, "The End")
         self.assertEqual(len(meta), 1)
