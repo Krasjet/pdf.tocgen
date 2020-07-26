@@ -9,61 +9,67 @@ level2_path = os.path.join(dirpath, "files/level2.pdf")
 
 
 class ExtractMetaTest(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super(ExtractMetaTest, self).__init__(*args, **kwargs)
+        self.doc = fitz.open(level2_path)
+
     def test_extract_meta_basic(self):
-        doc = fitz.open(level2_path)
-        meta = extract_meta(doc, "Section One", 1)
+        meta = extract_meta(self.doc, "Section One", 1)
         self.assertEqual(len(meta), 1)
-        self.assertIn('font', meta[0])
-        self.assertIn('CMBX12', meta[0]['font'])
+
+        txt, m = meta[0]
+        self.assertEqual(txt, "Section One")
+        self.assertIn('font', m)
+        self.assertIn('CMBX12', m['font'])
 
     def test_extract_meta_ign_case(self):
-        doc = fitz.open(level2_path)
-        #
-        meta = extract_meta(doc, "section one", 1, True)
+        meta = extract_meta(self.doc, "section one", 1, True)
         self.assertEqual(len(meta), 1, "ignore case should match lowercase")
-        self.assertIn('font', meta[0])
-        self.assertIn('CMBX12', meta[0]['font'])
+        txt, m = meta[0]
+        self.assertEqual(txt, "Section One")
+        self.assertIn('font', m)
+        self.assertIn('CMBX12', m['font'])
 
-        meta = extract_meta(doc, "sEcTIoN OnE", 1, True)
+        meta = extract_meta(self.doc, "sEcTIoN OnE", 1, True)
         self.assertEqual(len(meta), 1, "ignore case should match mixed case")
-        self.assertIn('font', meta[0])
-        self.assertIn('CMBX12', meta[0]['font'])
+        txt, m = meta[0]
+        self.assertEqual(txt, "Section One")
+        self.assertIn('font', m)
+        self.assertIn('CMBX12', m['font'])
 
-        meta = extract_meta(doc, "section one", 1, False)
+        meta = extract_meta(self.doc, "section one", 1, False)
         self.assertEqual(len(meta), 0,
                          "without ignore case, lowercase shouldn't match anything")
 
     def test_extract_meta_multiple(self):
-        doc = fitz.open(level2_path)
-
-        meta = extract_meta(doc, "Section", 1)
+        meta = extract_meta(self.doc, "Section", 1)
         self.assertEqual(len(meta), 2, "should match 2 instances")
 
-        self.assertIn('font', meta[0])
-        self.assertIn('CMBX12', meta[0]['font'])
+        txt, m = meta[0]
+        self.assertEqual(txt, "Section One")
+        self.assertIn('font', m)
+        self.assertIn('CMBX12', m['font'])
 
-        self.assertIn('font', meta[1])
-        self.assertIn('CMBX12', meta[1]['font'])
+        txt, m = meta[1]
+        self.assertEqual(txt, "Section Two")
+        self.assertIn('font', m)
+        self.assertIn('CMBX12', m['font'])
 
     def test_extract_meta_none(self):
-        doc = fitz.open(level2_path)
-
-        meta = extract_meta(doc, "Sectoin", 1)
+        meta = extract_meta(self.doc, "Sectoin", 1)
         self.assertEqual(len(meta), 0, "should match none")
 
     def test_extract_meta_outofrange(self):
-        doc = fitz.open(level2_path)
-
-        meta = extract_meta(doc, "Section One", 0)
+        meta = extract_meta(self.doc, "Section One", 0)
         self.assertEqual(len(meta), 0)
 
-        meta = extract_meta(doc, "Section One", 7)
+        meta = extract_meta(self.doc, "Section One", 7)
         self.assertEqual(len(meta), 0)
 
     def test_extract_meta_all(self):
-        doc = fitz.open(level2_path)
+        meta = extract_meta(self.doc, "The End")
 
-        meta = extract_meta(doc, "The End")
-        self.assertEqual(len(meta), 1)
-        self.assertIn('font', meta[0])
-        self.assertIn('CMBX12', meta[0]['font'])
+        txt, m = meta[0]
+        self.assertEqual(txt, "The End")
+        self.assertIn('font', m)
+        self.assertIn('CMBX12', m['font'])
