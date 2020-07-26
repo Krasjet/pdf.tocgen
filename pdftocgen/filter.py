@@ -1,10 +1,16 @@
+"""Filters on span dictionary
+
+This module contains the internal representation of filters, which are used to
+test if a span should be included in the ToC.
+"""
+
 import re
 
-from dataclasses import dataclass
 from typing import Optional
 from re import Pattern
 
 class Font:
+    """Filter on font attributes"""
     name: Pattern
     flags: int
     # besides the usual true (1) and false (0), we have another state--unset (x),
@@ -70,11 +76,12 @@ class Font:
 
         flags = spn.get('flags', ~self.flags)
         # see above for explanation
-        return not ((flags ^ self.flags) & self.ign_mask)
+        return not (flags ^ self.flags) & self.ign_mask
 
 
 
 class BoundingBox:
+    """Filter on bounding box"""
     left: Optional[float]
     top: Optional[float]
     right: Optional[float]
@@ -92,6 +99,7 @@ class BoundingBox:
 
 
 class ToCFilter:
+    """The overall filter on span dictionary"""
     level: int
     size: Optional[float]
     size_tolerance: Optional[float]
@@ -104,7 +112,7 @@ class ToCFilter:
 
         if self.level is None:
             raise ValueError("level is not set")
-        elif self.level < 1:
+        if self.level < 1:
             raise ValueError("level must be >= 1")
 
         tol = fltr_dict.get('tolerance', {})
@@ -114,4 +122,3 @@ class ToCFilter:
         self.color = fltr_dict.get('color')
         self.font = Font(fltr_dict.get('font'))
         self.bbox = BoundingBox(fltr_dict.get('bbox'), tol.get('bbox', 1e-5))
-

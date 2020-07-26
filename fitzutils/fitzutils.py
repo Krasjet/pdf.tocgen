@@ -1,8 +1,8 @@
 from contextlib import contextmanager
 from typing import Optional, ContextManager
 
-import fitz
 import sys
+import fitz
 
 
 @contextmanager
