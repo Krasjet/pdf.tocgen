@@ -1,1 +1,1 @@
-from .pdfxmeta import extract_meta
+from .pdfxmeta import extract_meta, dump_meta

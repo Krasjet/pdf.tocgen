@@ -13,8 +13,11 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 PyMuPDF = "^1.17.4"
+toml = "^0.10.1"
 
 [tool.poetry.dev-dependencies]
+pylint = "^2.5.3"
+jedi = "^0.17.2"
 
 [tool.poetry.scripts]
 pdfxmeta = "pdfxmeta.app:main"

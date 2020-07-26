@@ -8,6 +8,8 @@ import sys
 from argparse import Namespace
 from typing import List
 from fitzutils import open_pdf
+from typing import Tuple
+from textwrap import indent
 
 
 def getargs() -> Namespace:
@@ -30,6 +32,14 @@ def getargs() -> Namespace:
 
     return parser.parse_args()
 
+def print_result(text: str, meta: str) -> str:
+    return f"{text}:\n{indent(pdfxmeta.dump_meta(meta), '    ')}"
+
+def uncurry(f):
+    """(a -> b -> c) -> (a, b) -> c"""
+    def h(args):
+        return f(*args)
+    return h
 
 def main():
     args = getargs()
@@ -41,7 +51,6 @@ def main():
         if len(meta) == 0:
             sys.exit(1)
 
-        for m in meta:
-            # TODO print in a readable format
-            print(m)
+        print('\n'.join(map(uncurry(print_result), meta)))
+
 
