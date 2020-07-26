@@ -4,10 +4,10 @@
 .PHONY: install test
 
 test: # run tests
-	poetry run python -m unittest discover
+	@poetry run mamba --format=documentation ./spec
 
 xmeta-demo: # a demo of pdfxmeta
 	poetry run pdfxmeta ./tests/files/level2.pdf "Section"
 
 install: # set up dependencies
-	poetry install
+	poetry install --no-dev

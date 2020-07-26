@@ -18,6 +18,7 @@ toml = "^0.10.1"
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"
 jedi = "^0.17.2"
+mamba = "^0.11.0"
 
 [tool.poetry.scripts]
 pdfxmeta = "pdfxmeta.app:main"
