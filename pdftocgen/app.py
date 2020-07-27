@@ -18,12 +18,23 @@ def getargs() -> Namespace:
     parser.add_argument('fname',
                         metavar='doc.pdf',
                         help="path to the input pdf document")
-    parser.add_argument('recipe',
+    parser.add_argument('-r', '--recipe',
                         metavar='recipe.toml',
-                        help="path to the recipe file")
-    parser.add_argument('-r', '--readable',
+                        type=argparse.FileType('r'),
+                        default='-',
+                        help="path to the recipe file, "
+                        "if this flag is not specified, "
+                        "the default is stdin")
+    parser.add_argument('-H', '--human-readable',
                         action='store_true',
                         help="print the toc in a readable format")
+    parser.add_argument('-o', '--out',
+                        metavar="file",
+                        type=argparse.FileType('w'),
+                        default='-',
+                        help="path to the output file. "
+                        "if this flag is not specified, "
+                        "the default is stdout")
     parser.add_argument('-g', '--debug',
                         action='store_true',
                         help="enable debug mode")
@@ -34,21 +45,26 @@ def getargs() -> Namespace:
 def main():
     args = getargs()
     try:
-        with open(args.recipe, "r") as recipe_file:
-            recipe = toml.load(recipe_file)
-            with open_pdf(args.fname) as doc:
-                toc = gen_toc(doc, recipe)
-                # print(dump_toc(gen_toc(doc, recipe)))
-                if args.readable:
-                    print(pprint_toc(toc))
-                else:
-                    print(dump_toc(toc), end="")
+        with open_pdf(args.fname) as doc:
+            recipe = toml.load(args.recipe)
+            toc = gen_toc(doc, recipe)
+            if args.human_readable:
+                print(pprint_toc(toc), file=args.out)
+            else:
+                print(dump_toc(toc), end="", file=args.out)
     except ValueError as e:
         if args.debug:
             raise e
         print("error:", e)
+        sys.exit(1)
     except IOError as e:
         if args.debug:
             raise e
         print("error: unable to open file", file=sys.stderr)
         print(e, file=sys.stderr)
+        sys.exit(1)
+    except KeyboardInterrupt as e:
+        if args.debug:
+            raise e
+        print("error: interrupted", file=sys.stderr)
+        sys.exit(1)

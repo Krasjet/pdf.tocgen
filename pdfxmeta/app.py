@@ -29,6 +29,13 @@ def getargs() -> Namespace:
                         action='store_true',
                         help="when flag is set, search will be "
                         "case-insensitive")
+    parser.add_argument('-o', '--out',
+                        metavar="file",
+                        type=argparse.FileType('w'),
+                        default='-',
+                        help="path to the output file. "
+                        "if this flag is not specified, "
+                        "the default is stdout")
 
     return parser.parse_args()
 
@@ -56,4 +63,4 @@ def main():
         if len(meta) == 0:
             sys.exit(1)
 
-        print('\n'.join(map(uncurry(print_result), meta)))
+        print('\n'.join(map(uncurry(print_result), meta)), file=args.out)
