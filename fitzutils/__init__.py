@@ -2,4 +2,4 @@
 
 __version__ = '0.1.0'
 
-from .fitzutils import open_pdf
+from .fitzutils import open_pdf, ToCEntry

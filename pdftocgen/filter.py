@@ -5,9 +5,13 @@ test if a span should be included in the ToC.
 """
 
 import re
+import fitz
 
-from typing import Optional
+from typing import Optional, List, Tuple
 from re import Pattern
+from fitz import Document
+from fitzutils import ToCEntry
+from itertools import chain, groupby
 
 DEF_TOLERANCE: float = 1e-5
 
@@ -18,6 +22,7 @@ def admits_float(expect: Optional[float],
     """Check if a float should be admitted by a filter"""
     return (expect is None) or \
            (actual is not None and abs(expect - actual) <= tolerance)
+
 
 class FontFilter:
     """Filter on font attributes"""
@@ -148,9 +153,91 @@ class ToCFilter:
     def admits(self, spn: dict) -> bool:
         """Check if the filter admit the span
 
-        Argument
+        Arguments
           spn: the span dict to be checked
         Returns
           False if the span doesn't match the filter
         """
         return self.font.admits(spn) and self.bbox.admits(spn)
+
+    def extract_from(self, doc: Document) -> List[ToCEntry]:
+        """Entract entries from a document matching the filter
+
+        Argument
+          doc: pdf document
+        Returns
+          a list of toc entries matching the document
+        """
+        result = []
+
+        for page in doc.pages():
+            meta = page.getTextPage().extractDICT()
+
+            # entries on current page
+            # [(text, bbox.top)]
+            entries: List[Tuple[str, float]] = []
+            for blk in meta.get('blocks', []):
+                entries.extend(
+                    merge_optional(self._extract_lines(blk.get('lines', [])))
+                )
+            result.extend(
+                # [(str, float)] -> [ToCEntry]
+                [ToCEntry(self.level, title, page.number + 1, vpos)
+                 for title, vpos in entries]
+            )
+
+        return result
+
+    def _extract_spans(self,
+                       spns: List[dict]
+                       ) -> List[Optional[Tuple[str, float]]]:
+        """Entract matching string from spans
+
+        Argument
+          spns: a list of spans
+        Returns
+          a list of optional strings,
+          if matches -> (text, bbox.top)
+          if no match -> None
+        """
+        return [
+            (spn.get('text', None), spn.get('bbox', (0, 0))[1])
+            if self.admits(spn) else None for spn in spns
+        ]
+
+    def _extract_lines(self,
+                       lines: List[dict]
+                       ) -> List[Optional[Tuple[str, float]]]:
+        """Entract matching string from lines
+
+        Argument
+          lines: a list of lines
+        Returns
+          a list of optional pairs, concatenated from the result from spans
+        """
+        # [[a]] -> [a]
+        return chain.from_iterable([
+            self._extract_spans(ln.get('spans', [])) for ln in lines
+        ])
+
+
+def merge_optional(ls: List[Optional[Tuple[str, float]]],
+                   sep: str = " "
+                   ) -> List[Tuple[str, float]]:
+    """Merge a list of optional tuples delimited by None
+
+    For string, result will be concatenated by sep
+    For bbox.top, result will be the minimum
+
+    >>> merge_optional([("1", 1), ("Section One", 2), None, ("Lorem ipsum", 3)])
+    [("1 Section One", 1), ("Lorem ipsum", 3)]
+    """
+    result = []
+    for nothing, grp in groupby(ls, lambda x: x is None):
+        if not nothing:
+            # [(a, b)] -> ([a], [b])
+            strs, vtops = zip(*grp)
+            result.append(
+                (sep.join(strs), min(vtops))
+            )
+    return result

@@ -1,8 +1,14 @@
+import os
+import fitz
+
 from mamba import description, it, before
 from pdftocgen.filter import (ToCFilter,
                               admits_float,
                               FontFilter,
                               BoundingBoxFilter)
+from fitzutils import ToCEntry
+
+dirpath = os.path.dirname(os.path.abspath(__file__))
 
 with description("admits_float") as self:
     with it("admits if difference is below tol"):
@@ -21,6 +27,75 @@ with description("admits_float") as self:
         assert not admits_float(1, None, 0.1)
 
 with description("ToCFilter") as self:
+    with before.all:
+        self.title_exact = {
+            'level': 1,
+            'font': {
+                'name': "CMBX12",
+                'size': 14.346199989318848,
+                'size_tolerance': 0,
+                'color': 0,
+                'superscript': False,
+                'italic': False,
+                'serif': True,
+                'monospace': False,
+                'bold': True
+            },
+            'bbox': {
+                'left': 157.98439025878906,
+                'top': 567.3842163085938,
+                'right': 245.18057250976562,
+                'bottom': 581.7447509765625,
+                'tolerance': 0
+            }
+        }
+
+        self.text_exact = {
+            'level': 2,
+            'font': {
+                'name': "CMR10",
+                'size': 9.962599754333496,
+                'size_tolerance': 0,
+                'color': 0,
+                'superscript': False,
+                'italic': False,
+                'serif': True,
+                'monospace': False,
+                'bold': False
+            },
+            'bbox': {
+                'left': 133.76800537109375,
+                'top': 592.492919921875,
+                'right': 477.537353515625,
+                'bottom': 602.4555053710938,
+                'tolerance': 0
+            }
+        }
+
+        self.spn_title = {
+            'size': 14.346199989318848,
+            'flags': 20,
+            'font': 'TZOLRB+CMBX12',
+            'color': 0,
+            'text': 'Section Two',
+            'bbox': (157.98439025878906,
+                     567.3842163085938,
+                     245.18057250976562,
+                     581.7447509765625)
+        }
+
+        self.spn_text = {
+            'size': 9.962599754333496,
+            'flags': 4,
+            'font': 'MJDLZY+CMR10',
+            'color': 0,
+            'text': 'text',
+            'bbox': (133.76800537109375,
+                     592.492919921875,
+                     477.537353515625,
+                     602.4555053710938)
+        }
+
     with it("raises error if no toc level is specified"):
         try:
             fltr = ToCFilter({})
@@ -44,6 +119,132 @@ with description("ToCFilter") as self:
             fltr = ToCFilter({'level': 2})
         except ValueError:
             assert False, "must not raise error"
+
+    with it("admits exact matches"):
+        filter_title = ToCFilter(self.title_exact)
+        filter_text = ToCFilter(self.text_exact)
+        assert filter_title.admits(self.spn_title)
+        assert filter_text.admits(self.spn_text)
+
+    with it("rejects unmatched spans"):
+        filter_title = ToCFilter(self.title_exact)
+        filter_text = ToCFilter(self.text_exact)
+        assert not filter_title.admits(self.spn_text)
+        assert not filter_text.admits(self.spn_title)
+
+    with it("admits correctly without bbox"):
+        filter_title = ToCFilter({
+            'level': 1,
+            'font': {
+                'name': "CMBX12",
+            }
+        })
+        assert filter_title.admits(self.spn_title)
+
+        filter_text = ToCFilter({
+            'level': 2,
+            'font': {
+                'size': 9.962599754333496,
+            }
+        })
+        assert filter_text.admits(self.spn_text)
+
+    with it("rejects correctly without bbox"):
+        filter_title = ToCFilter({
+            'level': 1,
+            'font': {
+                'name': "CMBX12",
+            }
+        })
+        assert not filter_title.admits(self.spn_text)
+
+        filter_text = ToCFilter({
+            'level': 2,
+            'font': {
+                'size': 9.962599754333496,
+            }
+        })
+        assert not filter_text.admits(self.spn_title)
+
+    with it("admits correctly without font"):
+        filter_title = ToCFilter({
+            'level': 1,
+            'bbox': {
+                'left': 157.98439025878906,
+            }
+        })
+        assert filter_title.admits(self.spn_title)
+
+        filter_text = ToCFilter({
+            'level': 2,
+            'bbox': {
+                'top': 592.492919921875,
+            }
+        })
+        assert filter_text.admits(self.spn_text)
+
+    with it("rejects correctly without font"):
+        filter_title = ToCFilter({
+            'level': 1,
+            'bbox': {
+                'left': 157.98439025878906,
+            }
+        })
+        assert not filter_title.admits(self.spn_text)
+
+        filter_text = ToCFilter({
+            'level': 2,
+            'bbox': {
+                'top': 592.492919921875,
+            }
+        })
+        assert not filter_text.admits(self.spn_title)
+
+
+with description("ToCFilter.extract_from") as self:
+    with before.all:
+        self.doc = fitz.open(os.path.join(dirpath, "files/level2.pdf"))
+
+        self.sec_filter = ToCFilter({
+            'level': 1,
+            'font': {
+                'name': "CMBX12",
+                'size': 14.346199989318848,
+            }
+        })
+
+        self.subsec_filter = ToCFilter({
+            'level': 2,
+            'font': {
+                'name': "CMBX12",
+                'size': 11.9552001953125
+            }
+        })
+
+        self.sec_expect = [
+            ToCEntry(level=1, title='1 Section One',
+                     pagenum=1, vpos=237.6484375),
+            ToCEntry(level=1, title='2 Section Two',
+                     pagenum=1, vpos=567.3842163085938),
+            ToCEntry(level=1, title='3 Section Three, with looong loooong looong ti- tle',
+                     pagenum=3, vpos=335.569580078125),
+            ToCEntry(level=1, title='4 The End',
+                     pagenum=5, vpos=366.62347412109375)
+        ]
+        self.subsec_expect = [
+            ToCEntry(level=2, title='2.1 Subsection Two.One',
+                     pagenum=2, vpos=452.56671142578125),
+            ToCEntry(level=2, title='3.1 Subsection Three.One, '
+                     'with even loooooooooooonger title, and probably even more',
+                     pagenum=3, vpos=619.4886474609375),
+            ToCEntry(level=2, title='3.2 Subsection Three.Two',
+                     pagenum=4, vpos=512.3426513671875),
+            ToCEntry(level=2, title='3.3 Subsection Three.Three',
+                     pagenum=5, vpos=125.79861450195312)
+        ]
+    with it("extracts toc correctly from pdf"):
+        assert self.sec_filter.extract_from(self.doc) == self.sec_expect
+        assert self.subsec_filter.extract_from(self.doc) == self.subsec_expect
 
 
 with description("FontFilter") as self:

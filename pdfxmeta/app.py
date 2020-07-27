@@ -49,8 +49,8 @@ def main():
     args = getargs()
 
     with open_pdf(args.fname) as doc:
-        meta = pdfxmeta.extract_meta(
-            doc, args.needle, args.page, args.ignore_case)
+        meta = pdfxmeta.extract_meta(doc, args.needle,
+                                     args.page, args.ignore_case)
 
         # nothing found
         if len(meta) == 0:

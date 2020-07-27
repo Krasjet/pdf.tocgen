@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from dataclasses import dataclass
 from typing import Optional, ContextManager
 
 import sys
@@ -31,3 +32,16 @@ def open_pdf(path: str,
             yield doc
         finally:
             doc.close()
+
+@dataclass
+class ToCEntry:
+    """A single entry in the table of contents"""
+    level: int
+    title: str
+    pagenum: int
+    # vpos == bbox.top, used for sorting
+    vpos: float
+
+    def to_fitz_entry(self) -> list:
+        return [self.level, self.title, self.pagenum]
+
