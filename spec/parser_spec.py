@@ -2,7 +2,10 @@ import os
 import io
 
 from mamba import description, it, before
-from fitzutils import *
+from fitzutils import (
+    dump_toc,
+    ToCEntry
+)
 from pdftocio.tocparser import parse_toc
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -30,6 +33,7 @@ with description("parse_toc") as self:
             ToCEntry(level=1, title="title6", pagenum=5)
         ]
 
+
     with it("can recover the result from dump_toc"):
         toc_s = dump_toc(self.toc, True)
         f = io.StringIO(toc_s)
@@ -41,15 +45,13 @@ with description("parse_toc") as self:
         assert parse_toc(f) == self.toc_novpos
         assert parse_toc(f) != self.toc
 
-    with it("won't print vpos if vpos is False"):
-        toc_s = dump_toc(self.toc, False)
-        f = io.StringIO(toc_s)
-        assert parse_toc(f) == self.toc_novpos
-        assert parse_toc(f) != self.toc
+    with it("escapes quotations correctly"):
+        quoted = '"a ""quoted"" title" 2\n    "a single \'quoted\' title" 4'
+        expect = [
+            ToCEntry(level=1, title='a "quoted" title', pagenum=2),
+            ToCEntry(level=2, title="a single 'quoted' title", pagenum=4)
+        ]
+        f = io.StringIO(quoted)
+        assert parse_toc(f) == expect
 
-    with it("won't print vpos if vpos is missing"):
-        toc_s = dump_toc(self.toc_novpos, True)
-        f = io.StringIO(toc_s)
-        assert parse_toc(f) == self.toc_novpos
-        assert parse_toc(f) != self.toc
 

@@ -15,10 +15,10 @@ def parse_entry(entry: List) -> ToCEntry:
     # heading level
     indent = len(list(takewhile(lambda x: x == '', entry)))
     return ToCEntry(
-        int(indent / 4) + 1,  # 4 spaces = 1 level
-        entry[indent],
-        int(entry[indent + 1]),
-        *entry[indent + 2:]   # vpos
+        int(indent / 4) + 1,    # 4 spaces = 1 level
+        entry[indent],          # heading
+        int(entry[indent + 1]), # pagenum
+        *entry[indent + 2:]     # vpos
     )
 
 
