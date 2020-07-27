@@ -1,6 +1,6 @@
 .PHONY: all clean
 
-all: level2.pdf hastoc.pdf
+all: level2.pdf hastoc.pdf onepage.pdf
 
 %.pdf: %.tex
 	latexmk -pdf $<
