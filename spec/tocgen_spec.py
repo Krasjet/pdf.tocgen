@@ -40,6 +40,7 @@ with description("gen_toc") as self:
             open(os.path.join(dirpath, "files/onepage_recipe.toml"))
         )
         self.onepage_expect = [
+            # false positive, but easy to remove in post-processing
             ToCEntry(level=2, title='krasjet',
                      pagenum=1, vpos=196.53366088867188),
             ToCEntry(level=1, title='1 Section One',
