@@ -7,16 +7,58 @@ import sys
 from argparse import Namespace
 from fitzutils import open_pdf, dump_toc, pprint_toc
 from .tocgen import gen_toc
+from textwrap import dedent
 
 
 def getargs() -> Namespace:
     """parse commandline arguments"""
 
-    app_desc = "pdftocgen: generate pdf table of contents from a recipe file."
-    parser = argparse.ArgumentParser(description=app_desc)
+    app_desc = dedent("""
+    pdftocgen: generate pdf table of contents from a recipe file.
+
+    This command automatically generates a table of contents for a pdf file
+    based on the font attributes and position of headings, which are specified
+    in a TOML recipe file. See the README for an introduction to the recipe
+    file.
+
+    To generate the table of contents for a pdf, use input redirection or pipes
+    to supply the recipe file
+
+        $ pdftocgen in.pdf < recipe.toml
+
+    or alternatively use the -r flag
+
+        $ pdftocgen -r recipe.toml in.pdf
+
+    The output of this command can be directly piped into pdftocio to generate
+    a new pdf file using the generated table of contents
+
+        $ pdftocgen -r recipe.toml in.pdf | pdftocio -o out.pdf in.pdf
+
+    or you could save the output of this command to a file for further
+    tweaking using output redirection
+
+        $ pdftocgen -r recipe.toml in.pdf > toc
+
+    or the -o flag
+
+        $ pdftocgen -r recipe.toml -o toc in.pdf
+
+    If you only need a readable format of the table of contents, use the -H
+    flag
+
+        $ pdftocgen -r recipe.toml -H in.pdf
+
+    This format cannot be parsed by pdftocio, but it is slightly more readable.
+
+    """)
+    parser = argparse.ArgumentParser(
+        description=app_desc,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
 
     parser.add_argument('input',
-                        metavar='doc.pdf',
+                        metavar='in.pdf',
                         help="path to the input pdf document")
     parser.add_argument('-r', '--recipe',
                         metavar='recipe.toml',
@@ -37,9 +79,9 @@ def getargs() -> Namespace:
                         metavar="file",
                         type=argparse.FileType('w'),
                         default='-',
-                        help="path to the output file. "
-                        "if this flag is not specified, "
-                        "the default is stdout")
+                        help="""path to the output file.
+                        if this flag is not specified,
+                        "the default is stdout""")
     parser.add_argument('-g', '--debug',
                         action='store_true',
                         help="enable debug mode")

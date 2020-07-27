@@ -19,7 +19,7 @@ def getargs() -> Namespace:
     app_desc = dedent("""
     pdftocio: manipulate the table of contents of a pdf file.
 
-    This program can operate in two ways: it can either be used to extract the
+    This command can operate in two ways: it can either be used to extract the
     table of contents of a pdf, or add table of contents to a pdf using the
     output of pdftocgen.
 
