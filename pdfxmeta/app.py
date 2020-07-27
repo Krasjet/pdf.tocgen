@@ -15,7 +15,7 @@ def getargs() -> Namespace:
     app_desc = "pdfxmeta: extract metadata for a string in a pdf document."
     parser = argparse.ArgumentParser(description=app_desc)
 
-    parser.add_argument('fname',
+    parser.add_argument('input',
                         metavar='doc.pdf',
                         help="path to the input pdf file")
     parser.add_argument('needle',
@@ -55,7 +55,7 @@ def uncurry(f):
 def main():
     args = getargs()
 
-    with open_pdf(args.fname) as doc:
+    with open_pdf(args.input) as doc:
         meta = pdfxmeta.extract_meta(doc, args.needle,
                                      args.page, args.ignore_case)
 

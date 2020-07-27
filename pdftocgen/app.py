@@ -5,8 +5,8 @@ import toml
 import sys
 
 from argparse import Namespace
-from fitzutils import open_pdf
-from .tocgen import gen_toc, dump_toc, pprint_toc
+from fitzutils import open_pdf, dump_toc, pprint_toc
+from .tocgen import gen_toc
 
 
 def getargs() -> Namespace:
@@ -15,7 +15,7 @@ def getargs() -> Namespace:
     app_desc = "pdftocgen: generate pdf table of contents from a recipe file."
     parser = argparse.ArgumentParser(description=app_desc)
 
-    parser.add_argument('fname',
+    parser.add_argument('input',
                         metavar='doc.pdf',
                         help="path to the input pdf document")
     parser.add_argument('-r', '--recipe',
@@ -28,6 +28,11 @@ def getargs() -> Namespace:
     parser.add_argument('-H', '--human-readable',
                         action='store_true',
                         help="print the toc in a readable format")
+    parser.add_argument('-v', '--vpos',
+                        action='store_true',
+                        help="if this flag is set, "
+                        "the vertical position of each header "
+                        "will be generated in the output")
     parser.add_argument('-o', '--out',
                         metavar="file",
                         type=argparse.FileType('w'),
@@ -45,13 +50,13 @@ def getargs() -> Namespace:
 def main():
     args = getargs()
     try:
-        with open_pdf(args.fname) as doc:
+        with open_pdf(args.input) as doc:
             recipe = toml.load(args.recipe)
             toc = gen_toc(doc, recipe)
             if args.human_readable:
                 print(pprint_toc(toc), file=args.out)
             else:
-                print(dump_toc(toc), end="", file=args.out)
+                print(dump_toc(toc, args.vpos), end="", file=args.out)
     except ValueError as e:
         if args.debug:
             raise e
