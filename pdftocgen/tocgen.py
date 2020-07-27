@@ -1,4 +1,3 @@
-import fitz
 import io
 import csv
 
@@ -7,8 +6,7 @@ from typing import List
 from fitzutils import ToCEntry, get_pages
 from multiprocessing import Pool
 from itertools import repeat, chain
-from textwrap import indent
-from .filter import ToCFilter, extract_toc, extract_toc
+from .filter import ToCFilter, extract_toc
 
 
 def gen_toc(doc: Document, recipe: dict) -> List[ToCEntry]:
@@ -34,6 +32,7 @@ def gen_toc(doc: Document, recipe: dict) -> List[ToCEntry]:
         )
         return sorted(result, key=ToCEntry.key)
 
+
 def dump_toc(entries: List[ToCEntry]) -> str:
     """Dump table of contents as a CSV dialect
 
@@ -53,6 +52,7 @@ def dump_toc(entries: List[ToCEntry]) -> str:
             writer.writerow([entry.title, entry.pagenum])
         return out.getvalue()
 
+
 def pprint_toc(entries: List[ToCEntry]) -> str:
     """Pretty print table of contents
 
@@ -62,5 +62,6 @@ def pprint_toc(entries: List[ToCEntry]) -> str:
       a multiline string
     """
     return '\n'.join([
-        f"{(entry.level - 1) * '    '}{entry.title} ··· {entry.pagenum}" for entry in entries
+        f"{(entry.level - 1) * '    '}{entry.title} ··· {entry.pagenum}"
+        for entry in entries
     ])

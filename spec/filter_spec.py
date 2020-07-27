@@ -227,7 +227,8 @@ with description("extract_toc") as self:
                      pagenum=1, vpos=237.6484375),
             ToCEntry(level=1, title='2 Section Two',
                      pagenum=1, vpos=567.3842163085938),
-            ToCEntry(level=1, title='3 Section Three, with looong loooong looong ti- tle',
+            ToCEntry(level=1,
+                     title='3 Section Three, with looong loooong looong ti- tle',
                      pagenum=3, vpos=335.569580078125),
             ToCEntry(level=1, title='4 The End',
                      pagenum=5, vpos=366.62347412109375)
@@ -327,8 +328,8 @@ with description("FontFilter") as self:
         assert fnt.name.search("anything")
         assert fnt.flags == 0
         assert fnt.ign_mask == 0
-        assert fnt.color == None
-        assert fnt.size == None
+        assert fnt.color is None
+        assert fnt.size is None
         assert fnt.size_tolerance == 1e-5
 
     with it("admits exact matches"):

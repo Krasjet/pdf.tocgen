@@ -66,5 +66,3 @@ class ToCEntry:
 
     def to_fitz_entry(self) -> list:
         return [self.level, self.title, self.pagenum]
-
-

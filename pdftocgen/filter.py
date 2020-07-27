@@ -5,11 +5,9 @@ test if a span should be included in the ToC.
 """
 
 import re
-import fitz
 
 from typing import Optional, List, Tuple
 from re import Pattern
-from fitz import Document
 from fitzutils import ToCEntry
 from itertools import chain, groupby
 
@@ -191,6 +189,7 @@ class ToCFilter:
         return chain.from_iterable([
             self._extract_spans(ln.get('spans', [])) for ln in lines
         ])
+
 
 def extract_toc(pages: List[dict], fltr: ToCFilter) -> List[ToCEntry]:
     """Extract toc entries from a list of pages matching the filter
