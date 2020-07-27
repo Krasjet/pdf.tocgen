@@ -1,0 +1,15 @@
+# The recipe for "On Lisp" [1] by Paul Graham
+#
+# Note that you need to download the PDF version. The PDF is well structured
+# and no extra processing is needed.
+# [1]: http://www.paulgraham.com/onlisptext.html
+
+[[filter]]
+level = 1
+font.name = "Times-Bold"
+font.size = 19.92530059814453
+
+[[filter]]
+level = 2
+font.name = "Times-Bold"
+font.size = 11.9552001953125

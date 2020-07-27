@@ -1,0 +1,12 @@
+# The recipe for
+#   $ man -Tpdf man > out.pdf
+# only tested under groff
+[[filter]]
+level = 1
+font.name = "Times-Bold"
+font.size = 10.949999809265137
+font.superscript = false
+font.italic = false
+font.serif = true
+font.monospace = false
+font.bold = true

@@ -1,0 +1,12 @@
+# The recipe for the default groff_ms, produced by
+# $ groff -ms -Tpdf in.ms > out.pdf
+
+[[filter]]
+level = 1
+font.name = "Times-Bold"
+font.size = 10
+bbox.left = 72
+
+# All the headings (.NH) have the same font attributes, so you need to manually
+# format the heading levels of the toc (for vim users, >> in normal mode will
+# add indentation to a line)
