@@ -39,7 +39,6 @@ def getargs() -> Namespace:
     parser.add_argument('needle',
                         help="the query string to search for")
     parser.add_argument('-p', '--page',
-                        action='store',
                         type=int,
                         help="""specify the page in which the string
                              occurs (1-based index)""")
