@@ -2,20 +2,22 @@
 
 from toml.encoder import _dump_str, _dump_float
 
+import re
+
 from fitz import Document, Page
 from typing import Optional, List, Tuple
 
 
 def extract_meta(doc: Document,
-                 needle: str,
+                 pattern: str,
                  page: Optional[int] = None,
                  ign_case: bool = False
                  ) -> List[Tuple[str, dict]]:
-    """Extract meta for `needle` on `page` in a pdf document
+    """Extract meta for a `pattern` on `page` in a pdf document
 
     Arguments
       doc: document from pymupdf
-      needle: the text to search for
+      pattern: a regular expression pattern
       page: page number (1-based index), if None is given, search for the
             entire document, but this is highly discouraged.
       ign_case: ignore case?
@@ -29,30 +31,29 @@ def extract_meta(doc: Document,
     else:  # page out of range
         return result
 
+    regex = re.compile(
+        pattern,
+        re.IGNORECASE
+    ) if ign_case else re.compile(pattern)
+
     # we could parallelize this, but I don't see a reason
     # to *not* specify a page number
     for p in pages:
-        result = result + search_in_page(needle, p, ign_case)
+        result = result + search_in_page(regex, p)
 
     return result
 
 
-def search_in_page(needle: str,
-                   page: Page,
-                   ign_case: bool = False
-                   ) -> List[Tuple[str, dict]]:
+def search_in_page(regex: re.Pattern, page: Page) -> List[Tuple[str, dict]]:
     """Search for `text` in `page` and extract meta
 
     Arguments
       needle: the text to search for
       page: page number (1-based index)
-      ign_case: ignore case?
     Returns
       a list of (text, meta)
     """
     result = []
-    if ign_case:
-        needle = needle.casefold()
 
     page_meta = page.getTextPage().extractDICT()
 
@@ -61,13 +62,11 @@ def search_in_page(needle: str,
         for ln in blk.get('lines', []):
             for spn in ln.get('spans', []):
                 text = spn.get('text', "")
-                if ign_case:
-                    text = text.casefold()
                 # the current search algorithm is very naive and doesn't handle
                 # line breaks and more complex layout. might want to take a
                 # look at `page.searchFor`, but the current algorithm should be
                 # enough for TeX-generated pdf
-                if needle in text:
+                if regex.search(text):
                     result.append((spn['text'], spn))
 
     return result

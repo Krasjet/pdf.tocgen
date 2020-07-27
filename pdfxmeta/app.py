@@ -21,7 +21,7 @@ def getargs() -> Namespace:
         $ pdfxmeta -p 1 in.pdf "Subsection One"
 
     to find the metadata, mainly the font attributes and bounding box, of lines
-    containing the query "Subsection One" on page 1. Specifying a page number
+    containing the pattern "Subsection One" on page 1. Specifying a page number
     is optional but highly recommended, since it greatly reduces the ambiguity
     of matches and execution time.
 
@@ -36,8 +36,8 @@ def getargs() -> Namespace:
     parser.add_argument('input',
                         metavar='in.pdf',
                         help="path to the input pdf file")
-    parser.add_argument('needle',
-                        help="the query string to search for")
+    parser.add_argument('pattern',
+                        help="the pattern to search for (python regex)")
     parser.add_argument('-p', '--page',
                         type=int,
                         help="""specify the page in which the string
@@ -73,7 +73,7 @@ def main():
     args = getargs()
 
     with open_pdf(args.input) as doc:
-        meta = pdfxmeta.extract_meta(doc, args.needle,
+        meta = pdfxmeta.extract_meta(doc, args.pattern,
                                      args.page, args.ignore_case)
         # nothing found
         if len(meta) == 0:
