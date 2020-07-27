@@ -143,9 +143,9 @@ class ToCFilter:
         self.level = fltr_dict.get('level')
 
         if self.level is None:
-            raise ValueError("level is not set")
+            raise ValueError("filter's 'level' is not set")
         if self.level < 1:
-            raise ValueError("level must be >= 1")
+            raise ValueError("filter's 'level' must be >= 1")
 
         self.font = FontFilter(fltr_dict.get('font', {}))
         self.bbox = BoundingBoxFilter(fltr_dict.get('bbox', {}))
@@ -159,34 +159,6 @@ class ToCFilter:
           False if the span doesn't match the filter
         """
         return self.font.admits(spn) and self.bbox.admits(spn)
-
-    def extract_from(self, doc: Document) -> List[ToCEntry]:
-        """Entract entries from a document matching the filter
-
-        Argument
-          doc: pdf document
-        Returns
-          a list of toc entries matching the document
-        """
-        result = []
-
-        for page in doc.pages():
-            meta = page.getTextPage().extractDICT()
-
-            # entries on current page
-            # [(text, bbox.top)]
-            entries: List[Tuple[str, float]] = []
-            for blk in meta.get('blocks', []):
-                entries.extend(
-                    merge_optional(self._extract_lines(blk.get('lines', [])))
-                )
-            result.extend(
-                # [(str, float)] -> [ToCEntry]
-                [ToCEntry(self.level, title, page.number + 1, vpos)
-                 for title, vpos in entries]
-            )
-
-        return result
 
     def _extract_spans(self,
                        spns: List[dict]
@@ -219,6 +191,37 @@ class ToCFilter:
         return chain.from_iterable([
             self._extract_spans(ln.get('spans', [])) for ln in lines
         ])
+
+def extract_toc(pages: List[dict], fltr: ToCFilter) -> List[ToCEntry]:
+    """Extract toc entries from a list of pages matching the filter
+
+    Since PyMuPDF's Document is not serializable, and thus not available for
+    multiprocessing, we had to first convert Document into a list of pages
+    before using this function.
+
+    Arguments
+      pages: the dictionary of pages
+      fltr: the filter to be applied
+    Returns
+      a list of toc entries matching the pages
+    """
+    result = []
+
+    for pagenum, page in enumerate(pages, 1):
+        # entries on current page
+        # [(text, bbox.top)]
+        entries: List[Tuple[str, float]] = []
+        for blk in page.get('blocks', []):
+            entries.extend(
+                merge_optional(fltr._extract_lines(blk.get('lines', [])))
+            )
+        result.extend(
+            # [(str, float)] -> [ToCEntry]
+            [ToCEntry(fltr.level, title, pagenum, vpos)
+             for title, vpos in entries]
+        )
+
+    return result
 
 
 def merge_optional(ls: List[Optional[Tuple[str, float]]],

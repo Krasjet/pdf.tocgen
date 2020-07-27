@@ -4,9 +4,10 @@ import fitz
 from mamba import description, it, before
 from pdftocgen.filter import (ToCFilter,
                               admits_float,
+                              extract_toc,
                               FontFilter,
                               BoundingBoxFilter)
-from fitzutils import ToCEntry
+from fitzutils import ToCEntry, get_pages
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 
@@ -201,7 +202,7 @@ with description("ToCFilter") as self:
         assert not filter_text.admits(self.spn_title)
 
 
-with description("ToCFilter.extract_from") as self:
+with description("extract_toc") as self:
     with before.all:
         self.doc = fitz.open(os.path.join(dirpath, "files/level2.pdf"))
 
@@ -243,8 +244,9 @@ with description("ToCFilter.extract_from") as self:
                      pagenum=5, vpos=125.79861450195312)
         ]
     with it("extracts toc correctly from pdf"):
-        assert self.sec_filter.extract_from(self.doc) == self.sec_expect
-        assert self.subsec_filter.extract_from(self.doc) == self.subsec_expect
+        pages = get_pages(self.doc)
+        assert extract_toc(pages, self.sec_filter) == self.sec_expect
+        assert extract_toc(pages, self.subsec_filter) == self.subsec_expect
 
 
 with description("FontFilter") as self:
