@@ -3,7 +3,7 @@ import fitz
 import toml
 
 from mamba import description, it, before
-from fitzutils import ToCEntry, get_pages
+from fitzutils import ToCEntry
 from pdftocgen.tocgen import gen_toc
 
 dirpath = os.path.dirname(os.path.abspath(__file__))

@@ -1,6 +1,3 @@
-import io
-import csv
-
 from fitz import Document
 from typing import List
 from fitzutils import ToCEntry, get_pages

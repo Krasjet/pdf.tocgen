@@ -1,13 +1,11 @@
 """The executable of pdftocio"""
 
 import argparse
-import toml
 import sys
 import os.path
 
 from argparse import Namespace
 from fitzutils import open_pdf, dump_toc, pprint_toc
-from fitz import Document
 from .tocparser import parse_toc
 from .tocio import write_toc, read_toc
 from textwrap import dedent

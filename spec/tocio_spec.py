@@ -1,5 +1,4 @@
 import os
-import io
 import fitz
 
 from mamba import description, it, before
