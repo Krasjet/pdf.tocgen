@@ -182,7 +182,7 @@ merged.
 License
 -------
 
-pdf.tocgen is free software. The source code of pdf.tocgen is licensed under
+pdf.tocgen is a free software. The source code of pdf.tocgen is licensed under
 the GNU GPLv3 license.
 
 pdf.tocgen is based on [PyMuPDF][pymupdf], licensed under the GNU GPLv3
