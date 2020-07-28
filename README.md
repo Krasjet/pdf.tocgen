@@ -43,7 +43,7 @@ to install the latest version systemwide, or use
 $ pip install -U --user pdf.tocgen
 ```
 to install it for the current user. I would recommend the latter approach to
-avoid messing up the package managers on your system.
+avoid messing up the package manager on your system.
 
 Workflow
 --------
