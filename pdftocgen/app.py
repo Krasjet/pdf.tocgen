@@ -64,9 +64,9 @@ def getargs() -> Namespace:
                         metavar='recipe.toml',
                         type=argparse.FileType('r'),
                         default='-',
-                        help="path to the recipe file, "
-                        "if this flag is not specified, "
-                        "the default is stdin")
+                        help="""path to the recipe file,
+                        if this flag is not specified,
+                        the default is stdin""")
     parser.add_argument('-H', '--human-readable',
                         action='store_true',
                         help="print the toc in a readable format")
@@ -81,7 +81,7 @@ def getargs() -> Namespace:
                         default='-',
                         help="""path to the output file.
                         if this flag is not specified,
-                        "the default is stdout""")
+                        the default is stdout""")
     parser.add_argument('-g', '--debug',
                         action='store_true',
                         help="enable debug mode")
