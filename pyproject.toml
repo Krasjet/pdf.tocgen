@@ -1,9 +1,20 @@
 [tool.poetry]
 name = "pdf.tocgen"
-version = "0.1.0"
-description = "a work in progress"
+version = "0.9.9"
+description = "Automatically generate table of contents for pdf files"
 authors = ["krasjet"]
-license = "GPL-3.0-only"
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://krasjet.com/voice/pdf.tocgen/"
+repository = "https://github.com/Krasjet/pdf.tocgen"
+keywords = ["pdf", "cli"]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop"
+]
+
 packages = [
   { include = "pdfxmeta" },
   { include = "pdftocgen" },
@@ -12,7 +23,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 PyMuPDF = "^1.17.4"
 toml = "^0.10.1"
 
