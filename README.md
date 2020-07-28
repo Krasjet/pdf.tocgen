@@ -197,7 +197,8 @@ license. A copy of the AGPLv3 license is included in the repository.
 If you want to make any derivatives based on this project, please follow the
 terms of the GNU GPLv3 license.
 
-# Support
+Support
+-------
 
 Even though pdf.tocgen is free to use and free to tinker with, I do accept
 [donations][donate] if you find this tool useful and want to support me and
