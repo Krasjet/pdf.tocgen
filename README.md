@@ -32,7 +32,7 @@ Installation
 ------------
 
 `pdf.tocgen` written in Python 3. It is known to work with Python 3.8 under
-Linux, but Python 3.7 should be the minimum. Use
+Linux, but unit test suggests Python 3.7 should be the minimum. Use
 
 ```sh
 $ pip install -U pdf.tocgen
