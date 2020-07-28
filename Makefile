@@ -13,7 +13,7 @@ xmeta-demo: # a demo of pdfxmeta
 	@poetry run pdfxmeta ./spec/files/level2.pdf "Section"
 
 tocgen-demo: # a demo of tocgen
-	@poetry run pdftocgen ./spec/files/level2.pdf ./recipes/default_latex.toml
+	@poetry run pdftocgen ./spec/files/level2.pdf < ./recipes/default_latex.toml
 
 install: # set up non-dev dependencies
 	poetry install --no-dev
