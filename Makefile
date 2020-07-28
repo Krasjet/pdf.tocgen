@@ -15,5 +15,8 @@ xmeta-demo: # a demo of pdfxmeta
 tocgen-demo: # a demo of tocgen
 	@poetry run pdftocgen ./spec/files/level2.pdf ./recipes/default_latex.toml
 
-install: # set up dependencies
+install: # set up non-dev dependencies
 	poetry install --no-dev
+
+dev: # set up dev dependencies
+	poetry install
