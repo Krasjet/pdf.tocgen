@@ -149,10 +149,13 @@ directly:
     (pdf.tocgen) $ pdfxmeta in.pdf "pattern"
 
 Before you send a patch or pull request, make sure the unit test passes by
-running (mamba has some issue in Python 3.8.4, this is not required until it
-gets fixed):
+running:
 
     $ make test
+
+If you are using Python 3.8.4+, the tests might fail due to an issue from
+mamba, I have sent a pull request [7] to fix this issue. Wait until it's
+merged.
 
 License
 -------
@@ -173,3 +176,4 @@ terms of the GNU GPLv3 license.
 [4]: https://python-poetry.org/
 [5]: https://github.com/pymupdf/PyMuPDF
 [6]: https://mupdf.com/docs/index.html
+[7]: https://github.com/nestorsalceda/mamba/pull/151

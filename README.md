@@ -169,12 +169,15 @@ directly:
 ```
 
 Before you send a patch or pull request, make sure the unit test passes by
-running (mamba has some issue in Python 3.8.4, this is not required until it
-gets fixed):
+running:
 
 ```sh
 $ make test
 ```
+
+If you are using Python 3.8.4+, the tests might fail due to an issue from
+mamba, I have sent a pull request [mamba] to fix this issue. Wait until it's
+merged.
 
 License
 -------
@@ -195,3 +198,4 @@ terms of the GNU GPLv3 license.
 [poetry]: https://python-poetry.org/
 [pymupdf]: https://github.com/pymupdf/PyMuPDF
 [mupdf]: https://mupdf.com/docs/index.html
+[mamba]: https://github.com/nestorsalceda/mamba/pull/151
