@@ -20,3 +20,6 @@ install: # set up non-dev dependencies
 
 dev: # set up dev dependencies
 	poetry install
+
+publish: # publish package to pypi
+	poetry publish --build
