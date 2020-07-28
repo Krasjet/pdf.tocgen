@@ -169,7 +169,8 @@ directly:
 ```
 
 Before you send a patch or pull request, make sure the unit test passes by
-running:
+running (mamba has some issue in Python 3.8.4, this is not required until it
+gets fixed):
 
 ```sh
 $ make test
