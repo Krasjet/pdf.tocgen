@@ -7,5 +7,4 @@ __pycache__
 *.fdb_latexmk
 *.fls
 *.log
-*.pdf
 *.out

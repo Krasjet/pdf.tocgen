@@ -28,7 +28,6 @@ jobs:
     - name: install dependencies
       shell: bash
       run: poetry install
-
-    - name: run pytest
+    - name: run tests
       shell: bash
       run: poetry run mamba --format=documentation ./spec
