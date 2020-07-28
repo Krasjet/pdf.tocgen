@@ -3,6 +3,7 @@
 import argparse
 import toml
 import sys
+import pdftocgen
 
 from argparse import Namespace
 from fitzutils import open_pdf, dump_toc, pprint_toc
@@ -85,6 +86,9 @@ def getargs() -> Namespace:
     parser.add_argument('-g', '--debug',
                         action='store_true',
                         help="enable debug mode")
+    parser.add_argument('-V', '--version',
+                        action='version',
+                        version='%(prog)s ' + pdftocgen.__version__)
 
     return parser.parse_args()
 

@@ -53,6 +53,9 @@ def getargs() -> Namespace:
                         help="""path to the output file.
                         if this flag is not specified,
                         the default is stdout""")
+    parser.add_argument('-V', '--version',
+                        action='version',
+                        version='%(prog)s ' + pdfxmeta.__version__)
 
     return parser.parse_args()
 
