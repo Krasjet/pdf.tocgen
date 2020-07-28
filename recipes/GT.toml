@@ -5,12 +5,12 @@
 #
 # [1]: https://www.jmilne.org/math/CourseNotes/GT.pdf
 
-[[filter]]
+[[heading]]
 level = 1
 font.name = "NimbusSanL-Bold"
 font.size = 22.804000854492188
 
-[[filter]]
+[[heading]]
 level = 2
 font.name = "(NimbusRomNo9L-Medi|MT2MIT)"
 font.size = 14.346199989318848

@@ -6,19 +6,19 @@
 #
 # [1]: https://felleisen.org/matthias/HtDC/htdc.pdf
 
-[[filter]]
+[[heading]]
 level = 1
 font.name = "Palatino-Bold"
 font.size = 17.21540069580078
 font.color = 0x221f1f
 
-[[filter]]
+[[heading]]
 level = 2
 font.name = "Palatino-Bold"
 font.size = 14.346199989318848
 font.color = 0x221f1f
 
-[[filter]]
+[[heading]]
 level = 3
 font.name = "(Palatino-Bold|Palatino-Italic)"
 font.size = 11.9552001953125

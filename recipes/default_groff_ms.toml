@@ -1,7 +1,7 @@
 # The recipe for the default groff_ms, produced by
 # $ groff -ms -Tpdf in.ms > out.pdf
 
-[[filter]]
+[[heading]]
 level = 1
 font.name = "Times-Bold"
 font.size = 10

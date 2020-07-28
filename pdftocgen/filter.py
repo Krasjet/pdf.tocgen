@@ -1,7 +1,7 @@
 """Filter on span dictionaries
 
-This module contains the internal representation of filters, which are used to
-test if a span should be included in the ToC.
+This module contains the internal representation of heading filters, which are
+used to test if a span should be included in the ToC.
 """
 
 import re
@@ -130,7 +130,7 @@ class BoundingBoxFilter:
 
 
 class ToCFilter:
-    """Filter on span dictionary to pick out titles in the ToC"""
+    """Filter on span dictionary to pick out headings in the ToC"""
 
     # The level of the title, strictly > 0
     level: int

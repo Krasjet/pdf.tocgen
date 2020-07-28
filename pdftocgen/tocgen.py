@@ -15,7 +15,7 @@ def gen_toc(doc: Document, recipe: dict) -> List[ToCEntry]:
     Returns
       a list of ToC entries
     """
-    fltr_dicts = recipe.get('filter', [])
+    fltr_dicts = recipe.get('heading', [])
 
     if len(fltr_dicts) == 0:
         raise ValueError("no filter found")

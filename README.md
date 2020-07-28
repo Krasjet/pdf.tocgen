@@ -77,12 +77,12 @@ $ vim recipe.toml # edit
 An example recipe would look like this:
 
 ```toml
-[[filter]]
+[[heading]]
 level = 1
 font.name = "Times-Bold"
 font.size = 19.92530059814453
 
-[[filter]]
+[[heading]]
 level = 2
 font.name = "Times-Bold"
 font.size = 11.9552001953125

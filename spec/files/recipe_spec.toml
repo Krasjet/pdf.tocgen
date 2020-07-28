@@ -1,4 +1,4 @@
-[[filter]]
+[[heading]]
 level = 1
 font.name = "CMBX12"
 font.size = 14.346199989318848
@@ -15,7 +15,7 @@ bbox.right = 477.66058349609375
 bbox.bottom = 349.93011474609375
 bbox.tolerance = 1e-5
 
-[[filter]]
+[[heading]]
 level = 2
 font.name = "CMBX10"
 font.size = 9.962599754333496
