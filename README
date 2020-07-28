@@ -172,6 +172,15 @@ the AGPLv3 license is included in the repository.
 If you want to make any derivatives based on this project, please follow the
 terms of the GNU GPLv3 license.
 
+Support
+-------
+
+Even though pdf.tocgen is free to use and free to tinker with, I do accept
+donations [9] if you find this tool useful and want to support me and this
+project in any means, though I won't promise to prioritize your feature
+requests or suggestions.
+
+
 [1]: https://krasjet.com/voice/pdf.tocgen/
 [2]: https://en.wikipedia.org/wiki/Unix_philosophy
 [3]: https://krasjet.com/voice/pdf.tocgen/#a-worked-example
@@ -180,3 +189,4 @@ terms of the GNU GPLv3 license.
 [6]: https://mupdf.com/docs/index.html
 [7]: https://github.com/nestorsalceda/mamba/pull/151
 [8]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+[9]: https://krasjet.com/life.sustainer/
