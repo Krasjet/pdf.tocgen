@@ -160,8 +160,10 @@ merged.
 License
 -------
 
-pdf.tocgen a is free software. The source code of pdf.tocgen is licensed under
-the GNU GPLv3 license.
+pdf.tocgen itself a is free software. The source code of pdf.tocgen is licensed
+under the GNU GPLv3 license. However, the recipes in the `recipes` directory is
+separately licensed under the CC BY-NC-SA 4.0 License [8] to prevent any
+commercial usage, and thus not included in the distribution.
 
 pdf.tocgen is based on PyMuPDF [5], licensed under the GNU GPLv3 license, which
 is again based on MuPDF [6], licensed under the GNU AGPLv3 license. A copy of
@@ -177,3 +179,4 @@ terms of the GNU GPLv3 license.
 [5]: https://github.com/pymupdf/PyMuPDF
 [6]: https://mupdf.com/docs/index.html
 [7]: https://github.com/nestorsalceda/mamba/pull/151
+[8]: https://creativecommons.org/licenses/by-nc-sa/4.0/
