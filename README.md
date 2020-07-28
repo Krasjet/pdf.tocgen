@@ -1,8 +1,8 @@
 pdf.tocgen
 ==========
 
-![PyPI](https://img.shields.io/pypi/v/pdf.tocgen)
-![build](https://github.com/Krasjet/pdf.tocgen/workflows/build/badge.svg?branch=master)
+[![PyPI](https://img.shields.io/pypi/v/pdf.tocgen)](https://pypi.org/project/pdf.tocgen/)
+[![build](https://github.com/Krasjet/pdf.tocgen/workflows/build/badge.svg?branch=master)](https://github.com/Krasjet/pdf.tocgen/actions?query=workflow%3Abuild)
 
 ```
                           in.pdf
