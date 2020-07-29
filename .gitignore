@@ -1,4 +1,3 @@
-poetry.lock
 dist
 __pycache__
 *.egg-info
