@@ -28,12 +28,12 @@ Please see the homepage [1] for a detailed introduction.
 Installation
 ------------
 
-pdf.tocgen written in Python 3. It is known to work with Python 3.8 under
+pdf.tocgen is written in Python 3. It is known to work with Python 3.8 under
 Linux, but unit test suggests Python 3.7 should be the minimum. Use
 
     $ pip install -U pdf.tocgen
 
-to install the latest version systemwide, or use
+to install the latest version systemwide. Alternatively, use `pipx` or
 
     $ pip install -U --user pdf.tocgen
 

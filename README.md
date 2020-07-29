@@ -1,4 +1,4 @@
-pdf.tocgen
+[pdf.tocgen][tocgen]
 ==========
 
 [![PyPI](https://img.shields.io/pypi/v/pdf.tocgen)](https://pypi.org/project/pdf.tocgen/)
@@ -34,19 +34,21 @@ Please see the [**homepage**][tocgen] for a detailed introduction.
 Installation
 ------------
 
-`pdf.tocgen` written in Python 3. It is known to work with Python 3.8 under
+pdf.tocgen is written in Python 3. It is known to work with Python 3.8 under
 Linux, but unit test suggests Python 3.7 should be the minimum. Use
 
 ```sh
 $ pip install -U pdf.tocgen
 ```
-to install the latest version systemwide, or use
+to install the latest version systemwide. Alternatively, use [pipx][pipx] or
 
 ```sh
 $ pip install -U --user pdf.tocgen
 ```
 to install it for the current user. I would recommend the latter approach to
 avoid messing up the package manager on your system.
+
+[pipx]: https://pipxproject.github.io/pipx/
 
 Workflow
 --------
@@ -255,7 +257,7 @@ $ pdftocgen -v doc.pdf < rcp.toml
 "Level 1 heading 2" 5 380.78875732421875
 ```
 
-`pdftocio` can understand the vertical position in the file to generate table
+`pdftocio` can understand the vertical position in the output to generate table
 of contents entries that link to the exact position of the heading, instead of
 the top of the page.
 
