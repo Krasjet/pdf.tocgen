@@ -153,16 +153,12 @@ running:
 
     $ make test
 
-If you are using Python 3.8.4+, the tests might fail due to an issue from
-mamba, I have sent a pull request [7] to fix this issue. Wait until it's
-merged.
-
 License
 -------
 
 pdf.tocgen itself a is free software. The source code of pdf.tocgen is licensed
 under the GNU GPLv3 license. However, the recipes in the `recipes` directory is
-separately licensed under the CC BY-NC-SA 4.0 License [8] to prevent any
+separately licensed under the CC BY-NC-SA 4.0 License [7] to prevent any
 commercial usage, and thus not included in the distribution.
 
 pdf.tocgen is based on PyMuPDF [5], licensed under the GNU GPLv3 license, which
@@ -176,7 +172,7 @@ Support
 -------
 
 Even though pdf.tocgen is free to use and free to tinker with, I do accept
-donations [9] if you find this tool useful and want to support me and this
+donations [8] if you find this tool useful and want to support me and this
 project in any means, though I won't promise to prioritize your feature
 requests or suggestions.
 
@@ -187,6 +183,5 @@ requests or suggestions.
 [4]: https://python-poetry.org/
 [5]: https://github.com/pymupdf/PyMuPDF
 [6]: https://mupdf.com/docs/index.html
-[7]: https://github.com/nestorsalceda/mamba/pull/151
-[8]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[9]: https://krasjet.com/life.sustainer/
+[7]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+[8]: https://krasjet.com/life.sustainer/

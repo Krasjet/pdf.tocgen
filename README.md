@@ -426,10 +426,6 @@ running:
 $ make test
 ```
 
-If you are using Python 3.8.4+, the tests might fail due to an issue from
-mamba, I have sent a pull request [mamba][mamba] to fix this issue. Wait until it's
-merged.
-
 License
 -------
 
@@ -459,6 +455,5 @@ requests or suggestions.
 [poetry]: https://python-poetry.org/
 [pymupdf]: https://github.com/pymupdf/PyMuPDF
 [mupdf]: https://mupdf.com/docs/index.html
-[mamba]: https://github.com/nestorsalceda/mamba/pull/151
 [cc]: https://creativecommons.org/licenses/by-nc-sa/4.0/
 [donate]: https://krasjet.com/life.sustainer/
