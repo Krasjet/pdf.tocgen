@@ -142,6 +142,252 @@ $ pdftocio in.pdf < toc
 Each of the three programs has some extra functionalities. Use the `-h` option
 to see all the options you could pass in.
 
+More examples
+-------------
+
+Because of the modularity of design, each program is useful on its own, despite
+being part of the pipeline. This section will provide some more examples on how
+you could use them. Feel free to come up with more.
+
+### `pdftocio`
+
+`pdftocio` should best demonstrate this point, this program can do a lot on its
+own.
+
+To display existing table of contents in a PDF to `stdout`:
+
+```console
+$ pdftocio doc.pdf
+"Level 1 heading 1" 1
+    "Level 2 heading 1" 1
+        "Level 3 heading 1" 2
+        "Level 3 heading 2" 3
+    "Level 2 heading 2" 4
+"Level 1 heading 2" 5
+```
+
+To write existing table of contents in a PDF to a file named `toc`:
+
+```console
+$ pdftocio doc.pdf > toc
+```
+
+To write a `toc` file back to `doc.pdf`:
+
+```console
+$ pdftocio doc.pdf < toc
+```
+
+To specify the name of output PDF:
+
+```console
+$ pdftocio -o out.pdf doc.pdf < toc
+```
+
+To copy the table of contents from `doc1.pdf` to `doc2.pdf`:
+
+```console
+$ pdftocio doc1.pdf | pdftocio doc2.pdf
+```
+
+To print the table of contents for reading:
+
+```console
+$ pdftocio -H doc.pdf
+Level 1 heading 1 ··· 1
+    Level 2 heading 1 ··· 1
+        Level 3 heading 1 ··· 2
+        Level 3 heading 2 ··· 3
+    Level 2 heading 2 ··· 4
+Level 1 heading 2 ··· 5
+```
+
+### `pdftocgen`
+
+If you have obtained an existing recipe `rcp.toml` for `doc.pdf`, you could
+apply it and print the outline to `stdout` by
+
+```console
+$ pdftocio doc.pdf < rcp.toml
+"Level 1 heading 1" 1
+    "Level 2 heading 1" 1
+        "Level 3 heading 1" 2
+        "Level 3 heading 2" 3
+    "Level 2 heading 2" 4
+"Level 1 heading 2" 5
+```
+
+To output the table of contents to a file called `toc`:
+
+```console
+$ pdftocgen doc.pdf < rcp.toml > toc
+```
+
+To import the generated table of contents to the PDF file, and output
+to `doc_out.pdf`:
+
+```console
+$ pdftocgen doc.pdf < rcp.toml | pdftocio -o doc_out.pdf doc.pdf
+```
+
+To print the generated table of contents for reading:
+
+```console
+$ pdftocgen -H doc.pdf < rcp.toml
+Level 1 heading 1 ··· 1
+    Level 2 heading 1 ··· 1
+        Level 3 heading 1 ··· 2
+        Level 3 heading 2 ··· 3
+    Level 2 heading 2 ··· 4
+Level 1 heading 2 ··· 5
+```
+
+If you want to include the vertical position in a page for each heading, use the
+`-v` flag
+
+```console
+$ pdftocgen -v doc.pdf < rcp.toml
+"Level 1 heading 1" 1 306.947998046875
+    "Level 2 heading 1" 1 586.3488159179688
+        "Level 3 heading 1" 2 586.5888061523438
+        "Level 3 heading 2" 3 155.66879272460938
+    "Level 2 heading 2" 4 435.8687744140625
+"Level 1 heading 2" 5 380.78875732421875
+```
+
+`pdftocio` can understand the vertical position in the file to generate table
+of contents entries that link to the exact position of the heading, instead of
+the top of the page.
+
+```console
+$ pdftocgen -v doc.pdf < rcp.toml | pdftocio doc.pdf
+```
+
+Note that the default output of `pdftocio` here is `doc_out.pdf`.
+
+### `pdfxmeta`
+
+To search for `Anaphoric` in the entire PDF:
+
+```console
+$ pdfxmeta onlisp.pdf "Anaphoric"
+14. Anaphoric Macros:
+    font.name = "Times-Bold"
+    font.size = 9.962599754333496
+    font.color = 0x000000
+    font.superscript = false
+    font.italic = false
+    font.serif = true
+    font.monospace = false
+    font.bold = true
+    bbox.left = 308.6400146484375
+    bbox.top = 307.1490478515625
+    bbox.right = 404.33282470703125
+    bbox.bottom = 320.9472351074219
+[--snip--]
+```
+
+To case-insensitive search for `Anaphoric` in the entire PDF:
+
+```console
+$ pdfxmeta -i onlisp.pdf "Anaphoric"
+to compile-time. Chapter 14 introduces anaphoric macros, which allow you to:
+    font.name = "Times-Roman"
+    font.size = 9.962599754333496
+    font.color = 0x000000
+    font.superscript = false
+    font.italic = false
+    font.serif = true
+    font.monospace = false
+    font.bold = false
+    bbox.left = 138.60000610351562
+    bbox.top = 295.6583557128906
+    bbox.right = 459.0260009765625
+    bbox.bottom = 308.948486328125
+[--snip--]
+```
+
+Use regular expression to case-insensitive search search for `Anaphoric` in the
+entire PDF:
+
+```console
+$ pdfxmeta onlisp.pdf "[Aa]naphoric"
+to compile-time. Chapter 14 introduces anaphoric macros, which allow you to:
+    font.name = "Times-Roman"
+    font.size = 9.962599754333496
+    font.color = 0x000000
+    font.superscript = false
+    font.italic = false
+    font.serif = true
+    font.monospace = false
+    font.bold = false
+    bbox.left = 138.60000610351562
+    bbox.top = 295.6583557128906
+    bbox.right = 459.0260009765625
+    bbox.bottom = 308.948486328125
+[--snip--]
+```
+
+To search only on page 203:
+
+```console
+$ pdfxmeta -p 203 onlisp.pdf "anaphoric"
+anaphoric if, called:
+    font.name = "Times-Roman"
+    font.size = 9.962599754333496
+    font.color = 0x000000
+    font.superscript = false
+    font.italic = false
+    font.serif = true
+    font.monospace = false
+    font.bold = false
+    bbox.left = 138.60000610351562
+    bbox.top = 283.17822265625
+    bbox.right = 214.81094360351562
+    bbox.bottom = 296.4683532714844
+[--snip--]
+```
+
+To dump the entire page of 203:
+
+```console
+$ pdfxmeta -p 203 onlisp.pdf ""
+190:
+    font.name = "Times-Roman"
+    font.size = 9.962599754333496
+    font.color = 0x000000
+    font.superscript = false
+    font.italic = false
+    font.serif = true
+    font.monospace = false
+    font.bold = false
+    bbox.left = 138.60000610351562
+    bbox.top = 126.09941101074219
+    bbox.right = 153.54388427734375
+    bbox.bottom = 139.38951110839844
+[--snip--]
+```
+
+To dump the entire PDF document:
+
+```console
+$ pdfxmeta onlisp.pdf ""
+i:
+    font.name = "Times-Roman"
+    font.size = 9.962599754333496
+    font.color = 0x000000
+    font.superscript = false
+    font.italic = false
+    font.serif = true
+    font.monospace = false
+    font.bold = false
+    bbox.left = 458.0400085449219
+    bbox.top = 126.09941101074219
+    bbox.right = 460.8096008300781
+    bbox.bottom = 139.38951110839844
+[--snip--]
+```
+
 Development
 -----------
 
