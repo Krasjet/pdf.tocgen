@@ -1,0 +1,68 @@
+\documentclass{article}[12pt]
+
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[USenglish]{babel}
+\usepackage[stretch=10,shrink=10]{microtype}
+\usepackage[left=1.3in,
+            right=1.3in,
+            top=1in,
+            bottom=1in,
+            footskip=.5in]{geometry}
+\setlength{\columnsep}{0.4in}
+
+\renewcommand{\rmdefault}{zpltlf}
+\usepackage{newpxtext}
+% will mess up embeded symbols
+% \usepackage{newpxmath}
+
+\title{The hard mode}
+\author{krasjet}
+\date{}
+
+\begin{document}
+\begin{multicols}{2}
+[
+  \maketitle
+]
+
+\section{Section One}
+
+\lipsum[2-3]
+
+\section{Section $1 + 1 = 2$}
+
+\lipsum[2-1]
+\begin{align*}
+  x^2 + 2 = 4
+\end{align*}
+\lipsum[2-1]
+
+\subsection{Subsection Two.One}
+\lipsum[2-5]
+
+\section*{$\mathrm{e}^{\ln(3)}$}
+
+\setcounter{section}{3}
+\setcounter{subsection}{0}
+
+\lipsum[1-2]
+
+\subsection{Subsection $\mathrm{e}^{\ln(3)}$.1, with looo\-ooooooooong title}
+\lipsum[2-5]
+
+\subsection{$\mathbb{S}$ubsection Three.Two}
+\lipsum[1-1]
+
+\subsection{Subsection Three.Three}
+\lipsum[2-3]
+
+\section{The $x \to \infty$ End}
+
+\lipsum[2-2]
+
+\end{multicols}
+
+\end{document}
