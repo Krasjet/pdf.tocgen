@@ -53,5 +53,3 @@ with description("parse_toc") as self:
         ]
         f = io.StringIO(quoted)
         assert parse_toc(f) == expect
-
-

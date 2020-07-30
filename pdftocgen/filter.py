@@ -175,9 +175,9 @@ class ToCFilter:
             if self.admits(spn) else None for spn in spns
         ]
 
-    def _extract_lines(self,
-                       lines: List[dict]
-                       ) -> List[Optional[Tuple[str, float]]]:
+    def extract_lines(self,
+                      lines: List[dict]
+                      ) -> List[Optional[Tuple[str, float]]]:
         """Entract matching string from lines
 
         Argument
@@ -212,7 +212,7 @@ def extract_toc(pages: List[dict], fltr: ToCFilter) -> List[ToCEntry]:
         entries: List[Tuple[str, float]] = []
         for blk in page.get('blocks', []):
             entries.extend(
-                merge_optional(fltr._extract_lines(blk.get('lines', [])))
+                merge_optional(fltr.extract_lines(blk.get('lines', [])))
             )
         result.extend(
             # [(str, float)] -> [ToCEntry]
