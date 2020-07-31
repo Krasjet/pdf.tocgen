@@ -2,4 +2,4 @@
 
 __version__ = '1.1.0'
 
-from .pdfxmeta import extract_meta, dump_meta
+from .pdfxmeta import extract_meta, dump_meta, dump_toml

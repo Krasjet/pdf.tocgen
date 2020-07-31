@@ -289,6 +289,36 @@ $ pdfxmeta onlisp.pdf "Anaphoric"
 [--snip--]
 ```
 
+To output the result as a heading filter with the automatic settings,
+
+```console
+$ pdfxmeta -a 1 onlisp.pdf "Anaphoric"
+[[heading]]
+# 14. Anaphoric Macros
+level = 1
+greedy = true
+font.name = "Times-Bold"
+font.size = 9.962599754333496
+# font.size_tolerance = 1e-5
+# font.color = 0x000000
+# font.superscript = false
+# font.italic = false
+# font.serif = true
+# font.monospace = false
+# font.bold = true
+# bbox.left = 308.6400146484375
+# bbox.top = 307.1490478515625
+# bbox.right = 404.33282470703125
+# bbox.bottom = 320.9472351074219
+# bbox.tolerance = 1e-5
+[--snip--]
+```
+which can be directly write to a recipe file:
+
+```console
+$ pdfxmeta -a 1 onlisp.pdf "Anaphoric" >> recipe.toml
+```
+
 To case-insensitive search for `Anaphoric` in the entire PDF:
 
 ```console

@@ -5,14 +5,14 @@ from toml.encoder import _dump_str, _dump_float
 import re
 
 from fitz import Document, Page
-from typing import Optional, List, Tuple
+from typing import Optional, List
 
 
 def extract_meta(doc: Document,
                  pattern: str,
                  page: Optional[int] = None,
                  ign_case: bool = False
-                 ) -> List[Tuple[str, dict]]:
+                 ) -> List[dict]:
     """Extract meta for a `pattern` on `page` in a pdf document
 
     Arguments
@@ -39,19 +39,19 @@ def extract_meta(doc: Document,
     # we could parallelize this, but I don't see a reason
     # to *not* specify a page number
     for p in pages:
-        result = result + search_in_page(regex, p)
+        result.extend(search_in_page(regex, p))
 
     return result
 
 
-def search_in_page(regex: re.Pattern, page: Page) -> List[Tuple[str, dict]]:
+def search_in_page(regex: re.Pattern, page: Page) -> List[dict]:
     """Search for `text` in `page` and extract meta
 
     Arguments
       needle: the text to search for
       page: page number (1-based index)
     Returns
-      a list of (text, meta)
+      a list of meta
     """
     result = []
 
@@ -67,8 +67,7 @@ def search_in_page(regex: re.Pattern, page: Page) -> List[Tuple[str, dict]]:
                 # look at `page.searchFor`, but the current algorithm should be
                 # enough for TeX-generated pdf
                 if regex.search(text):
-                    result.append((spn['text'], spn))
-
+                    result.append(spn)
     return result
 
 
@@ -99,5 +98,54 @@ def dump_meta(spn: dict) -> str:
     result.append(f"bbox.top = {_dump_float(bbox[1])}")
     result.append(f"bbox.right = {_dump_float(bbox[2])}")
     result.append(f"bbox.bottom = {_dump_float(bbox[3])}")
+
+    return '\n'.join(result)
+
+
+def dump_toml(spn: dict, level: int, trail_nl: bool = False) -> str:
+    """Dump a valid TOML directly usable by pdftocgen
+
+    Argument
+      spn: span dict of the heading
+      level: heading level
+      trail_nl: add trailing new line
+    Returns
+      a valid toml string
+    """
+    result = []
+
+    result.append("[[heading]]")
+    result.append(f"# {spn.get('text', '')}")
+    result.append(f"level = {level}")
+    result.append("greedy = true")
+
+    # strip font subset prefix
+    # == takeWhile (\c -> c /= '+') str
+    before, sep, after = spn['font'].partition('+')
+    font = after if sep else before
+
+    result.append(f"font.name = {_dump_str(font)}")
+    result.append(f"font.size = {_dump_float(spn['size'])}")
+    result.append("# font.size_tolerance = 1e-5")
+    result.append(f"# font.color = {spn['color']:#08x}")
+
+    flags = spn['flags']
+
+    result.append(f"# font.superscript = {to_bools(flags & 0b00001)}")
+    result.append(f"# font.italic = {to_bools(flags & 0b00010)}")
+    result.append(f"# font.serif = {to_bools(flags & 0b00100)}")
+    result.append(f"# font.monospace = {to_bools(flags & 0b01000)}")
+    result.append(f"# font.bold = {to_bools(flags & 0b10000)}")
+
+    bbox = spn['bbox']
+
+    result.append(f"# bbox.left = {_dump_float(bbox[0])}")
+    result.append(f"# bbox.top = {_dump_float(bbox[1])}")
+    result.append(f"# bbox.right = {_dump_float(bbox[2])}")
+    result.append(f"# bbox.bottom = {_dump_float(bbox[3])}")
+    result.append("# bbox.tolerance = 1e-5")
+
+    if trail_nl:
+        result.append("")
 
     return '\n'.join(result)
