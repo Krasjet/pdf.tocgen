@@ -2,11 +2,14 @@ import os
 import fitz
 
 from mamba import description, it, before
-from pdftocgen.filter import (ToCFilter,
-                              admits_float,
-                              extract_toc,
-                              FontFilter,
-                              BoundingBoxFilter)
+from pdftocgen.filter import (
+    ToCFilter,
+    admits_float,
+    FontFilter,
+    BoundingBoxFilter
+)
+from pdftocgen.recipe import extract_toc
+
 from fitzutils import ToCEntry, get_pages
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -200,54 +203,6 @@ with description("ToCFilter") as self:
             }
         })
         assert not filter_text.admits(self.spn_title)
-
-
-with description("extract_toc") as self:
-    with before.all:
-        self.doc = fitz.open(os.path.join(dirpath, "files/level2.pdf"))
-
-        self.sec_filter = ToCFilter({
-            'level': 1,
-            'font': {
-                'name': "CMBX12",
-                'size': 14.346199989318848,
-            }
-        })
-
-        self.subsec_filter = ToCFilter({
-            'level': 2,
-            'font': {
-                'name': "CMBX12",
-                'size': 11.9552001953125
-            }
-        })
-
-        self.sec_expect = [
-            ToCEntry(level=1, title='1 Section One',
-                     pagenum=1, vpos=237.6484375),
-            ToCEntry(level=1, title='2 Section Two',
-                     pagenum=1, vpos=567.3842163085938),
-            ToCEntry(level=1,
-                     title='3 Section Three, with looong loooong looong ti- tle',
-                     pagenum=3, vpos=335.569580078125),
-            ToCEntry(level=1, title='4 The End',
-                     pagenum=5, vpos=366.62347412109375)
-        ]
-        self.subsec_expect = [
-            ToCEntry(level=2, title='2.1 Subsection Two.One',
-                     pagenum=2, vpos=452.56671142578125),
-            ToCEntry(level=2, title='3.1 Subsection Three.One, '
-                     'with even loooooooooooonger title, and probably even more',
-                     pagenum=3, vpos=619.4886474609375),
-            ToCEntry(level=2, title='3.2 Subsection Three.Two',
-                     pagenum=4, vpos=512.3426513671875),
-            ToCEntry(level=2, title='3.3 Subsection Three.Three',
-                     pagenum=5, vpos=125.79861450195312)
-        ]
-    with it("extracts toc correctly from pdf"):
-        pages = get_pages(self.doc)
-        assert extract_toc(pages, self.sec_filter) == self.sec_expect
-        assert extract_toc(pages, self.subsec_filter) == self.subsec_expect
 
 
 with description("FontFilter") as self:

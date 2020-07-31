@@ -6,10 +6,8 @@ used to test if a span should be included in the ToC.
 
 import re
 
-from typing import Optional, List, Tuple
+from typing import Optional
 from re import Pattern
-from fitzutils import ToCEntry
-from itertools import chain, groupby
 
 DEF_TOLERANCE: float = 1e-5
 
@@ -131,9 +129,11 @@ class BoundingBoxFilter:
 
 class ToCFilter:
     """Filter on span dictionary to pick out headings in the ToC"""
-
     # The level of the title, strictly > 0
     level: int
+    # When set, the filter will be more *greedy* and extract all the text in a
+    # block even when at least one match occurs
+    greedy: bool
     font: FontFilter
     bbox: BoundingBoxFilter
 
@@ -145,11 +145,12 @@ class ToCFilter:
         if self.level < 1:
             raise ValueError("filter's 'level' must be >= 1")
 
+        self.greedy = fltr_dict.get('greedy', False)
         self.font = FontFilter(fltr_dict.get('font', {}))
         self.bbox = BoundingBoxFilter(fltr_dict.get('bbox', {}))
 
     def admits(self, spn: dict) -> bool:
-        """Check if the filter admit the span
+        """Check if the filter admits the span
 
         Arguments
           spn: the span dict to be checked
@@ -157,89 +158,3 @@ class ToCFilter:
           False if the span doesn't match the filter
         """
         return self.font.admits(spn) and self.bbox.admits(spn)
-
-    def _extract_spans(self,
-                       spns: List[dict]
-                       ) -> List[Optional[Tuple[str, float]]]:
-        """Entract matching string from spans
-
-        Argument
-          spns: a list of spans
-        Returns
-          a list of optional strings,
-          if matches -> (text, bbox.top)
-          if no match -> None
-        """
-        return [
-            (spn.get('text', None), spn.get('bbox', (0, 0))[1])
-            if self.admits(spn) else None for spn in spns
-        ]
-
-    def extract_lines(self,
-                      lines: List[dict]
-                      ) -> List[Optional[Tuple[str, float]]]:
-        """Entract matching string from lines
-
-        Argument
-          lines: a list of lines
-        Returns
-          a list of optional pairs, concatenated from the result from spans
-        """
-        # [[a]] -> [a]
-        return chain.from_iterable([
-            self._extract_spans(ln.get('spans', [])) for ln in lines
-        ])
-
-
-def extract_toc(pages: List[dict], fltr: ToCFilter) -> List[ToCEntry]:
-    """Extract toc entries from a list of pages matching the filter
-
-    Since PyMuPDF's Document is not serializable, and thus not available for
-    multiprocessing, we had to first convert Document into a list of pages
-    before using this function.
-
-    Arguments
-      pages: the dictionary of pages
-      fltr: the filter to be applied
-    Returns
-      a list of toc entries matching the pages
-    """
-    result = []
-
-    for pagenum, page in enumerate(pages, 1):
-        # entries on current page
-        # [(text, bbox.top)]
-        entries: List[Tuple[str, float]] = []
-        for blk in page.get('blocks', []):
-            entries.extend(
-                merge_optional(fltr.extract_lines(blk.get('lines', [])))
-            )
-        result.extend(
-            # [(str, float)] -> [ToCEntry]
-            [ToCEntry(fltr.level, title, pagenum, vpos)
-             for title, vpos in entries]
-        )
-
-    return result
-
-
-def merge_optional(ls: List[Optional[Tuple[str, float]]],
-                   sep: str = " "
-                   ) -> List[Tuple[str, float]]:
-    """Merge a list of optional tuples delimited by None
-
-    For string, result will be concatenated by sep
-    For bbox.top, result will be the minimum
-
-    >>> merge_optional([("1", 1), ("Section One", 2), None, ("Lorem ipsum", 3)])
-    [("1 Section One", 1), ("Lorem ipsum", 3)]
-    """
-    result = []
-    for nothing, grp in groupby(ls, lambda x: x is None):
-        if not nothing:
-            # [(a, b)] -> ([a], [b])
-            strs, vtops = zip(*grp)
-            result.append(
-                (sep.join(strs), min(vtops))
-            )
-    return result

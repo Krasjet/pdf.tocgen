@@ -49,7 +49,7 @@ with description("gen_toc") as self:
                      pagenum=1, vpos=265.44744873046875),
             ToCEntry(level=2, title='2.1 Subsection Two.One',
                      pagenum=1, vpos=291.0536804199219),
-            ToCEntry(level=2, title='2.2 Subsection Two.Two  \xd7 2',
+            ToCEntry(level=2, title='2.2 Subsection Two.Two \xd7 2',
                      pagenum=1, vpos=311.1368103027344),
             ToCEntry(level=1, title='3 Section Three, with looong loooong looong ti- tle',
                      pagenum=1, vpos=334.00946044921875),
