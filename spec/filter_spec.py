@@ -1,5 +1,4 @@
 import os
-import fitz
 
 from mamba import description, it, before
 from pdftocgen.filter import (
@@ -8,9 +7,6 @@ from pdftocgen.filter import (
     FontFilter,
     BoundingBoxFilter
 )
-from pdftocgen.recipe import extract_toc
-
-from fitzutils import ToCEntry, get_pages
 
 dirpath = os.path.dirname(os.path.abspath(__file__))
 

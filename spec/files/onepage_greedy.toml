@@ -1,0 +1,15 @@
+[[heading]]
+level = 1
+font.name = "CMBX12"
+font.size = 14.346199989318848
+
+[[heading]]
+level = 2
+greedy = true
+font.name = "CMBX12"
+font.size = 11.9552001953125
+
+[[heading]]
+level = 3
+font.name = "CMBX10"
+font.size = 9.962599754333496
