@@ -65,30 +65,28 @@ but each of them is useful on their own.
 You should read [the example][ex] on the homepage for a proper introduction,
 but the basic workflow follows like this.
 
-First, use `pdfxmeta` to search for metadata of headings
+First, use `pdfxmeta` to search for the metadata of headings, and generate
+**heading filters** using the automatic setting
 
 ```sh
-$ pdfxmeta -p page in.pdf pattern >> recipe.toml
-$ pdfxmeta -p page in.pdf pattern2 >> recipe.toml
+$ pdfxmeta -p page -a 1 in.pdf "Section" >> recipe.toml
+$ pdfxmeta -p page -a 2 in.pdf "Subsection" >> recipe.toml
 ```
+The output `recipe.toml` file would contain several heading filters, each of
+which specifies the attribute of a heading at a particular level should have.
 
-Edit the `recipe.toml` file to pick out the attributes you need and specify the
-heading levels.
-
-```sh
-$ vim recipe.toml # edit
-```
-
-An example recipe would look like this:
+An example recipe file would look like this:
 
 ```toml
 [[heading]]
 level = 1
+greedy = true
 font.name = "Times-Bold"
 font.size = 19.92530059814453
 
 [[heading]]
 level = 2
+greedy = true
 font.name = "Times-Bold"
 font.size = 11.9552001953125
 ```
