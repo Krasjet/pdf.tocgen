@@ -37,21 +37,6 @@ def open_pdf(path: str,
             doc.close()
 
 
-def get_pages(doc: Document) -> List[dict]:
-    """Extract a list of pages from pdf `Document`
-
-    This method mainly deals with the problem that `Document` is not
-    serializable, most of the information we need is encoded in the pages, so
-    we could discard everything else in the document.
-
-    Argument
-      doc: the pdf document
-    Returns
-      a list of pages in the form of dictionaries
-    """
-    return [page.getTextPage().extractDICT() for page in doc.pages()]
-
-
 @dataclass
 class ToCEntry:
     """A single entry in the table of contents"""

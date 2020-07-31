@@ -4,6 +4,7 @@ from .filter import ToCFilter
 from fitzutils import ToCEntry
 from itertools import chain
 from collections import defaultdict
+from fitz import Document
 
 
 class FoundGreedy(Exception):
@@ -153,34 +154,21 @@ class Recipe:
             return [ToCEntry(e.level, blk_to_str(block), page, vpos)]
 
 
-def extract_toc(pages: List[dict], offset: int, recipe: Recipe) -> List[ToCEntry]:
-    """Extract toc entries from a list of pages matching the filter
-
-    Since PyMuPDF's Document is not serializable, and thus not available for
-    multiprocessing, we had to first convert Document into a list of pages
-    before using this function.
-
-    This also allows us to divide the task to multiple processors, while
-    keeping the pages ordered.
+def extract_toc(doc: Document, recipe: Recipe) -> List[ToCEntry]:
+    """Extract toc entries from a document
 
     Arguments
-      pages: the dictionary of pages
-      {
-        'blocks': [dict],
-        'height': float,
-        'width': float
-      }
-      offset: The page number of the first page in the list
+      doc: a pdf document
       recipe: recipe from user
     Returns
-      a list of toc entries matching the pages
+      a list of toc entries in the document
     """
     result = []
 
-    for pagenum, page in enumerate(pages, offset):
-        for blk in page.get('blocks', []):
+    for page in doc.pages():
+        for blk in page.getTextPage().extractDICT().get('blocks', []):
             result.extend(
-                recipe.extract_block(blk, pagenum)
+                recipe.extract_block(blk, page.number + 1)
             )
 
     return result
