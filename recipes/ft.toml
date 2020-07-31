@@ -1,0 +1,23 @@
+# The recipe for "Lecture Notes for EE 261" [1] by Brad Osgood
+#
+# [1]: https://see.stanford.edu/materials/lsoftaee261/book-fall-07.pdf
+# archive: https://web.archive.org/https://see.stanford.edu/materials/lsoftaee261/book-fall-07.pdf
+
+[[heading]]
+level = 1
+greedy = true
+font.name = "CMBX12"
+font.size = 24.78696060180664
+
+[[heading]]
+level = 2
+greedy = true
+font.name = "CMBX12"
+font.size = 14.346190452575684
+
+[[heading]]
+level = 3
+greedy = true
+font.name = "CMBX12"
+font.size = 11.955169677734375
+
