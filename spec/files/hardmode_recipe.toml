@@ -1,0 +1,18 @@
+[[heading]]
+level = 1
+greedy = true
+font.name = "TeXGyrePagellaX-Bold"
+font.size = 14.346199989318848
+
+[[heading]]
+level = 1
+greedy = true
+font.name = "CMR10"
+font.size = 9.962599754333496
+font.superscript = true
+
+[[heading]]
+level = 2
+greedy = true
+font.name = "TeXGyrePagellaX-Bold"
+font.size = 11.9552001953125

@@ -53,7 +53,7 @@ def concatFrag(frags: List[Optional[Fragment]], sep: str = " ") -> Dict[int, str
     acc = defaultdict(list)
     for frag in frags:
         if frag is not None:
-            acc[frag.level].append(frag.text.strip())
+            acc[frag.level].append(frag.text)
 
     result = {}
     for level, strs in acc.items():
@@ -90,10 +90,17 @@ class Recipe:
         """
         for fltr in self.filters:
             if fltr.admits(spn):
+                text = spn.get('text', "").strip()
+
+                if not text:
+                    # don't match empty spaces
+                    return None
+
                 if fltr.greedy:
                     # propagate all the way back to extract_block
                     raise FoundGreedy(fltr.level)
-                return Fragment(spn.get('text', ""), fltr.level)
+
+                return Fragment(text, fltr.level)
         return None
 
     def _extract_line(self, line: dict) -> List[Optional[Fragment]]:

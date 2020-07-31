@@ -39,7 +39,6 @@ with description("gen_toc") as self:
         self.onepage_recipe = toml.load(
             open(os.path.join(dirpath, "files/onepage_recipe.toml"))
         )
-
         self.onepage_greedy = toml.load(
             open(os.path.join(dirpath, "files/onepage_greedy.toml"))
         )
@@ -111,6 +110,31 @@ with description("gen_toc") as self:
                      pagenum=1, vpos=550.7654418945312)
         ]
 
+        self.hardmode = fitz.open(os.path.join(dirpath, "files/hardmode.pdf"))
+        self.hardmode_recipe = toml.load(
+            open(os.path.join(dirpath, "files/hardmode_recipe.toml"))
+        )
+
+        self.hardmode_expect = [
+            ToCEntry(level=1, title='1 Section One',
+                     pagenum=1, vpos=174.1232452392578),
+            ToCEntry(level=1, title='2 Section 1 + 1 = 2',
+                     pagenum=1, vpos=584.5831909179688),
+            ToCEntry(level=2, title='2.1 Subsection Two.One',
+                     pagenum=1, vpos=425.2061462402344),
+            ToCEntry(level=1, title='e ln(3)',
+                     pagenum=2, vpos=516.01708984375),
+            ToCEntry(level=2, title='3.1 Subsection e ln(3) .1, '
+                     'with looo- ooooooooong title',
+                     pagenum=2, vpos=302.5021057128906),
+            ToCEntry(level=2, title='3.2 S ubsection Three.Two, another long title',
+                     pagenum=3, vpos=396.212158203125),
+            ToCEntry(level=2, title='3.3 Subsection Three.Three',
+                     pagenum=3, vpos=68.84815979003906),
+            ToCEntry(level=1, title='4 The x → ∞ End',
+                     pagenum=3, vpos=483.49920654296875)
+        ]
+
     with it("generates 2-level toc correctly"):
         assert gen_toc(self.level2, self.level2_recipe) == self.level2_expect
 
@@ -128,3 +152,8 @@ with description("gen_toc") as self:
         assert gen_toc(
             self.onepage, self.onepage_greedy
         ) == self.onepage_greedy_expect
+
+    with it("passes the HARD MODE"):
+        assert gen_toc(
+            self.hardmode, self.hardmode_recipe
+        ) == self.hardmode_expect
