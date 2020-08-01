@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.1.1
+----------------
+
+Released July 31, 2020
+
+- Add a `--auto` option for `pdfxmeta` to output a valid heading filter directly.
+
 pdf.tocgen 1.1.0
 ----------------
 
