@@ -135,7 +135,6 @@ with description("dump_toml:") as self:
             'size': 1,
             'flags': 20,
             'color': 0,
-            'text': 'Section One',
             'bbox': (1, 2, 3, 4),
             'text': ""
         }
@@ -145,7 +144,6 @@ with description("dump_toml:") as self:
             'size': 1,
             'flags': 20,
             'color': 0,
-            'text': 'Section One',
             'bbox': (1, 2, 3, 4),
             'text': ""
         }
@@ -168,7 +166,6 @@ with description("dump_toml:") as self:
             'size': 1,
             'flags': 20,
             'color': 0,
-            'text': 'Section One',
             'bbox': (1, 2, 3, 4),
             'text': ""
         }
