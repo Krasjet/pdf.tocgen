@@ -48,7 +48,16 @@ $ pip install -U --user pdf.tocgen
 to install it for the current user. I would recommend the latter approach to
 avoid messing up the package manager on your system.
 
+If you are using an Arch-based Linux distro, the package is also available on
+[AUR][aur]. It can be installed using any AUR helper, for example [`yay`][yay]:
+
+```{.console .codein}
+$ yay -S pdf.tocgen
+```
+
 [pipx]: https://pipxproject.github.io/pipx/
+[aur]: https://aur.archlinux.org/packages/pdf.tocgen/
+[yay]: https://github.com/Jguer/yay
 
 Workflow
 --------

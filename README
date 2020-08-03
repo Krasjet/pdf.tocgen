@@ -40,6 +40,11 @@ to install the latest version systemwide. Alternatively, use `pipx` or
 to install it for the current user. I would recommend the latter approach to
 avoid messing up the package manager on your system.
 
+If you are using an Arch-based Linux distro, the package is also available on
+AUR [9]. It can be installed using any AUR helper, for example yay:
+
+    $ yay -S pdf.tocgen
+
 Workflow
 --------
 
@@ -186,3 +191,4 @@ requests or suggestions.
 [6]: https://mupdf.com/docs/index.html
 [7]: https://creativecommons.org/licenses/by-nc-sa/4.0/
 [8]: https://krasjet.com/life.sustainer/
+[9]: https://aur.archlinux.org/packages/pdf.tocgen/
