@@ -124,7 +124,7 @@ def main():
     except ValueError as e:
         if args.debug:
             raise e
-        print("error:", e)
+        print("error:", e, file=sys.stderr)
         sys.exit(1)
     except IOError as e:
         if args.debug:
