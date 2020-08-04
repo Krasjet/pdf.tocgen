@@ -3,7 +3,7 @@
 SPEC="spec/files"
 
 checkeq() {
-  if res=$(diff --color=always "$1" "$2"); then
+  if res=$(diff "$1" "$2"); then
     echo "[✓]"
   else
     echo "[✗]"
