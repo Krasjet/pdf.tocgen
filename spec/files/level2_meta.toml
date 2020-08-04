@@ -1,0 +1,38 @@
+[[heading]]
+# Section One
+level = 1
+greedy = true
+font.name = "CMBX12"
+font.size = 14.346199989318848
+# font.size_tolerance = 1e-5
+# font.color = 0x000000
+# font.superscript = false
+# font.italic = false
+# font.serif = true
+# font.monospace = false
+# font.bold = true
+# bbox.left = 157.98439025878906
+# bbox.top = 237.6484375
+# bbox.right = 243.12905883789062
+# bbox.bottom = 252.00897216796875
+# bbox.tolerance = 1e-5
+
+[[heading]]
+# Section Two
+level = 1
+greedy = true
+font.name = "CMBX12"
+font.size = 14.346199989318848
+# font.size_tolerance = 1e-5
+# font.color = 0x000000
+# font.superscript = false
+# font.italic = false
+# font.serif = true
+# font.monospace = false
+# font.bold = true
+# bbox.left = 157.98439025878906
+# bbox.top = 567.3842163085938
+# bbox.right = 245.18057250976562
+# bbox.bottom = 581.7447509765625
+# bbox.tolerance = 1e-5
+

@@ -1,0 +1,14 @@
+"1 Section One" 1
+"2 Section Two" 1
+    "2.1 Subsection Two.One" 1
+    "2.2 Subsection Two.Two × 2" 1
+"3 Section Three, with looong loooong looong ti- tle" 1
+    "3.1 Subsection Three.One, with even loooooooooooonger title, and probably even more" 1
+    "3.2 Subsection Three.Two" 1
+    "3.3 Subsection Three.Three" 1
+        "3.3.1 Subsubsection Three.Three.One" 1
+        "3.3.2 Subsubsection Three.Three.Two" 1
+        "3.3.3 Subsubsection Three.Three.Three" 1
+    "3.4 Subsection Three.Four" 1
+    "3.5 Subsection Three.Five" 1
+"4 The End" 1

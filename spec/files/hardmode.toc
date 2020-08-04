@@ -1,0 +1,8 @@
+"1 Section One" 1
+"2 Section 1 + 1 = 2" 1
+    "2.1 Subsection Two.One" 1
+"e ln(3)" 2
+    "3.1 Subsection e ln(3) .1, with looo- ooooooooong title" 2
+    "3.2 S ubsection Three.Two, another long title" 3
+    "3.3 Subsection Three.Three" 3
+"4 The x → ∞ End" 3

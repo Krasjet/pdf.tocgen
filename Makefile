@@ -5,6 +5,7 @@
 
 test: # run tests
 	@poetry run mamba --format=documentation ./spec
+	@poetry run ./spec/cli_spec.sh
 
 lint: # run lint
 	@poetry run pylint ./spec ./pdfxmeta ./pdftocgen ./fitzutils ./pdftocio

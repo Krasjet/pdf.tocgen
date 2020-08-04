@@ -1,0 +1,8 @@
+1 Section One ··· 1
+2 Section Two ··· 1
+    2.1 Subsection Two.One ··· 2
+3 Section Three, with looong loooong looong ti- tle ··· 3
+    3.1 Subsection Three.One, with even loooooooooooonger title, and probably even more ··· 3
+    3.2 Subsection Three.Two ··· 4
+    3.3 Subsection Three.Three ··· 5
+4 The End ··· 5
