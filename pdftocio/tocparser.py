@@ -26,7 +26,7 @@ def parse_entry(entry: List) -> ToCEntry:
         return toc_entry
     
     except IndexError as e:
-        print ("Unable to parse toc entry %s; Need at least %s parts but only have %s -> %s" % (entry, indent + 2 + 1, len(entry), e))
+        print ("Unable to parse toc entry %s; Need at least %s parts but only have %s -> %s" % (entry, indent + 2, len(entry), e))
         raise e
 
 
