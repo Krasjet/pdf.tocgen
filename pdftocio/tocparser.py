@@ -14,12 +14,20 @@ def parse_entry(entry: List) -> ToCEntry:
     # only need to count the number of '' before an entry to determined the
     # heading level
     indent = len(list(takewhile(lambda x: x == '', entry)))
-    return ToCEntry(
-        int(indent / 4) + 1,     # 4 spaces = 1 level
-        entry[indent],           # heading
-        int(entry[indent + 1]),  # pagenum
-        *entry[indent + 2:]      # vpos
-    )
+    
+    try:
+        toc_entry = ToCEntry(
+            int(indent / 4) + 1,     # 4 spaces = 1 level
+            entry[indent],           # heading
+            int(entry[indent + 1]),  # pagenum
+            *entry[indent + 2:]      # vpos
+        )
+        
+        return toc_entry
+    
+    except IndexError as e:
+        print ("Unable to parse toc entry %s; Need at least %s parts but only have %s -> %s" % (entry, indent + 2 + 1, len(entry), e))
+        raise e
 
 
 def parse_toc(file: IO) -> List[ToCEntry]:
