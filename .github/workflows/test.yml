@@ -31,4 +31,4 @@ jobs:
       run: poetry install
     - name: run tests
       shell: bash
-      run: poetry run mamba --format=documentation spec
+      run: make test
