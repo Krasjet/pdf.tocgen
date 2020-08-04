@@ -1,6 +1,14 @@
 Change log
 ==========
 
+pdf.tocgen 1.1.2
+----------------
+
+Released August 3, 2020
+
+- Add `--print` flag for `pdftocio` to force printing ToC.
+- Add spec for cli commands.
+
 pdf.tocgen 1.1.1
 ----------------
 
