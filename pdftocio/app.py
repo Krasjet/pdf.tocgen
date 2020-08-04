@@ -132,6 +132,11 @@ def main():
         print("error: unable to open file", file=sys.stderr)
         print(e, file=sys.stderr)
         sys.exit(1)
+    except IndexError as e:
+        if args.debug:
+            raise e
+        print("index error:", e, file=sys.stderr)
+        sys.exit(1)
     except KeyboardInterrupt as e:
         if args.debug:
             raise e
