@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.1.3
+----------------
+
+Released August 4, 2020
+
+- Usefully complain when tocparser can't parse an entry
+
 pdf.tocgen 1.1.2
 ----------------
 
