@@ -53,3 +53,13 @@ with description("parse_toc") as self:
         ]
         f = io.StringIO(quoted)
         assert parse_toc(f) == expect
+
+    with it("raises error when toc entry is invalid"):
+        malformed = '"entry" 1\n    "error entry"'
+        f = io.StringIO(malformed)
+        try:
+            parse_toc(f)
+        except IndexError:
+            pass
+        else:
+            assert False, "must raise error"
