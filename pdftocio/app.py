@@ -4,6 +4,7 @@ import argparse
 import sys
 import os.path
 import pdftocio
+import stat
 
 from argparse import Namespace
 from fitzutils import open_pdf, dump_toc, pprint_toc
@@ -86,34 +87,38 @@ def getargs() -> Namespace:
 
     return parser.parse_args()
 
+def is_piped(file):
+    mode = os.fstat(file.fileno()).st_mode
+    return stat.S_ISFIFO(mode) or stat.S_ISREG(mode)
+
 
 def main():
     args = getargs()
     try:
         with open_pdf(args.input) as doc:
-            if args.toc.isatty():
-                # no input from user, switch to output mode and extract the toc
-                # of pdf
-                toc = read_toc(doc)
-                if len(toc) == 0:
-                    print("error: no table of contents found", file=args.out)
-                    sys.exit(1)
+            if is_piped(args.toc):
+                # an input is given, so switch to input mode
+                toc = parse_toc(args.toc)
+                write_toc(doc, toc)
 
-                if args.human_readable:
-                    print(pprint_toc(toc))
-                else:
-                    print(dump_toc(toc), end="")
+                if args.out is None:
+                    # add suffix to input name as output
+                    pfx, ext = os.path.splitext(args.input)
+                    args.out = f"{pfx}_out{ext}"
+                doc.save(args.out)
                 sys.exit(0)
 
-            # an input is given, so switch to input mode
-            toc = parse_toc(args.toc)
-            write_toc(doc, toc)
+            # no input from user, switch to output mode and extract the toc
+            # of pdf
+            toc = read_toc(doc)
+            if len(toc) == 0:
+                print("error: no table of contents found", file=args.out)
+                sys.exit(1)
 
-            if args.out is None:
-                # add suffix to input name as output
-                pfx, ext = os.path.splitext(args.input)
-                args.out = f"{pfx}_out{ext}"
-            doc.save(args.out)
+            if args.human_readable:
+                print(pprint_toc(toc))
+            else:
+                print(dump_toc(toc), end="")
     except ValueError as e:
         if args.debug:
             raise e
