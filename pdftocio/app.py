@@ -73,6 +73,12 @@ def getargs() -> Namespace:
                         type=argparse.FileType('r'),
                         default='-',
                         help=toc_help)
+    parser.add_argument('-p', '--print',
+                        action='store_true',
+                        help="""when flag is set, print the existing toc in the
+                        input PDF file. this option is usually not
+                        necessary, since this is the default behavior when no
+                        input is given""")
     parser.add_argument('-H', '--human-readable',
                         action='store_true',
                         help="""print the toc in a readable format, only
@@ -87,38 +93,34 @@ def getargs() -> Namespace:
 
     return parser.parse_args()
 
-def is_piped(file):
-    mode = os.fstat(file.fileno()).st_mode
-    return stat.S_ISFIFO(mode) or stat.S_ISREG(mode)
-
 
 def main():
     args = getargs()
     try:
         with open_pdf(args.input) as doc:
-            if is_piped(args.toc):
-                # an input is given, so switch to input mode
-                toc = parse_toc(args.toc)
-                write_toc(doc, toc)
+            if args.toc.isatty() or args.print:
+                # no input from user, switch to output mode and extract the toc
+                # of pdf
+                toc = read_toc(doc)
+                if len(toc) == 0:
+                    print("error: no table of contents found", file=args.out)
+                    sys.exit(1)
 
-                if args.out is None:
-                    # add suffix to input name as output
-                    pfx, ext = os.path.splitext(args.input)
-                    args.out = f"{pfx}_out{ext}"
-                doc.save(args.out)
+                if args.human_readable:
+                    print(pprint_toc(toc))
+                else:
+                    print(dump_toc(toc), end="")
                 sys.exit(0)
 
-            # no input from user, switch to output mode and extract the toc
-            # of pdf
-            toc = read_toc(doc)
-            if len(toc) == 0:
-                print("error: no table of contents found", file=args.out)
-                sys.exit(1)
+            # an input is given, so switch to input mode
+            toc = parse_toc(args.toc)
+            write_toc(doc, toc)
 
-            if args.human_readable:
-                print(pprint_toc(toc))
-            else:
-                print(dump_toc(toc), end="")
+            if args.out is None:
+                # add suffix to input name as output
+                pfx, ext = os.path.splitext(args.input)
+                args.out = f"{pfx}_out{ext}"
+            doc.save(args.out)
     except ValueError as e:
         if args.debug:
             raise e

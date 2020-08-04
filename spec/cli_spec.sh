@@ -49,9 +49,11 @@ printf "\npdftocio\n"
 tmpdir=$(mktemp -d)
 
 it "adds toc to pdf and prints toc correctly"
-
 checkeq <(pdftocgen "$SPEC/hardmode.pdf" < "$SPEC/hardmode_recipe.toml" | \
           pdftocio -o "$tmpdir/out.pdf" "$SPEC/hardmode.pdf" && \
-          pdftocio "$tmpdir/out.pdf") \
+          pdftocio -p "$tmpdir/out.pdf") \
         "$SPEC/hardmode.toc"
 
+it "prints toc when -p is set"
+checkeq <(pdftocio -p "$SPEC/hastoc.pdf" < $SPEC/level2.toc) \
+        "$SPEC/hastoc.toc"
