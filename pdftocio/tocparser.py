@@ -24,8 +24,8 @@ def parse_entry(entry: List) -> ToCEntry:
         )
         return toc_entry
     except IndexError as e:
-        print(f"Unable to parse toc entry {entry}; "
-              f"Need at least {indent + 2} parts but only have {len(entry)}. ",
+        print(f"Unable to parse toc entry {entry};",
+              f"Need at least {indent + 2} parts but only have {len(entry)}.",
               "Make sure the page number is present.",
               file=sys.stderr)
         raise e
