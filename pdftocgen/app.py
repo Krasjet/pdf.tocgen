@@ -1,121 +1,152 @@
 """The executable of pdftocgen"""
 
-import argparse
 import toml
 import sys
+import getopt
 import pdftocgen
 
-from argparse import Namespace
+from getopt import GetoptError
+from typing import TextIO
 from fitzutils import open_pdf, dump_toc, pprint_toc
 from .tocgen import gen_toc
-from textwrap import dedent
 
+usage_s = """
+usage: pdftocgen [options] doc.pdf < recipe.toml
+""".strip()
 
-def getargs() -> Namespace:
-    """parse commandline arguments"""
+help_s = """
+usage: pdftocgen [options] doc.pdf < recipe.toml
 
-    app_desc = dedent("""
-    pdftocgen: generate pdf table of contents from a recipe file.
+Generate PDF table of contents from a recipe file.
 
-    This command automatically generates a table of contents for a pdf file
-    based on the font attributes and position of headings, which are specified
-    in a TOML recipe file. See the README for an introduction to the recipe
-    file.
+This command automatically generates a table of contents for doc.pdf based on
+the font attributes and position of headings specified in a TOML recipe file.
+See the [1] for an introduction to the recipe file.
 
-    To generate the table of contents for a pdf, use input redirection or pipes
-    to supply the recipe file
+To generate the table of contents for a pdf, use input redirection or pipes to
+supply a recipe file
 
-        $ pdftocgen in.pdf < recipe.toml
+    $ pdftocgen in.pdf < recipe.toml
 
-    or alternatively use the -r flag
+or alternatively use the -r flag
 
-        $ pdftocgen -r recipe.toml in.pdf
+    $ pdftocgen -r recipe.toml in.pdf
 
-    The output of this command can be directly piped into pdftocio to generate
-    a new pdf file using the generated table of contents
+The output of this command can be directly piped into pdftocio to generate a
+new pdf file using the generated table of contents
 
-        $ pdftocgen -r recipe.toml in.pdf | pdftocio -o out.pdf in.pdf
+    $ pdftocgen -r recipe.toml in.pdf | pdftocio -o out.pdf in.pdf
 
-    or you could save the output of this command to a file for further
-    tweaking using output redirection
+or you could save the output of this command to a file for further tweaking
+using output redirection
 
-        $ pdftocgen -r recipe.toml in.pdf > toc
+    $ pdftocgen -r recipe.toml in.pdf > toc
 
-    or the -o flag
+or the -o flag:
 
-        $ pdftocgen -r recipe.toml -o toc in.pdf
+    $ pdftocgen -r recipe.toml -o toc in.pdf
 
-    If you only need a readable format of the table of contents, use the -H
-    flag
+If you only need a readable format of the table of contents, use the -H flag
 
-        $ pdftocgen -r recipe.toml -H in.pdf
+    $ pdftocgen -r recipe.toml -H in.pdf
 
-    This format cannot be parsed by pdftocio, but it is slightly more readable.
+This format cannot be parsed by pdftocio, but it is slightly more readable.
 
-    """)
-    parser = argparse.ArgumentParser(
-        description=app_desc,
-        formatter_class=argparse.RawDescriptionHelpFormatter
-    )
+arguments
+  doc.pdf                   path to the input PDF document
 
-    parser.add_argument('input',
-                        metavar='in.pdf',
-                        help="path to the input pdf document")
-    parser.add_argument('-r', '--recipe',
-                        metavar='recipe.toml',
-                        type=argparse.FileType('r'),
-                        default='-',
-                        help="""path to the recipe file,
-                        if this flag is not specified,
-                        the default is stdin""")
-    parser.add_argument('-H', '--human-readable',
-                        action='store_true',
-                        help="print the toc in a readable format")
-    parser.add_argument('-v', '--vpos',
-                        action='store_true',
-                        help="if this flag is set, "
-                        "the vertical position of each header "
-                        "will be generated in the output")
-    parser.add_argument('-o', '--out',
-                        metavar="file",
-                        type=argparse.FileType('w'),
-                        default='-',
-                        help="""path to the output file.
-                        if this flag is not specified,
-                        the default is stdout""")
-    parser.add_argument('-g', '--debug',
-                        action='store_true',
-                        help="enable debug mode")
-    parser.add_argument('-V', '--version',
-                        action='version',
-                        version='%(prog)s ' + pdftocgen.__version__)
+options
+  -h, --help                show help
+  -r, --recipe=recipe.toml  path to the recipe file. if this flag is not
+                            specified, the default is stdin
+  -H, --human-readable      print the toc in a readable format
+  -v, --vpos                if this flag is set, the vertical position of each
+                            heading will be generated in the output
+  -o, --out=file            path to the output file. if this flag is not
+                            specified, the default is stdout
+  -g, --debug               enable debug mode
+  -V, --version             show version number
 
-    return parser.parse_args()
+[1]: https://krasjet.com/voice/pdf.tocgen/#step-1-build-a-recipe
+""".strip()
 
 
 def main():
-    args = getargs()
+    # parse arguments
     try:
-        with open_pdf(args.input) as doc:
-            recipe = toml.load(args.recipe)
+        opts, args = getopt.gnu_getopt(
+            sys.argv[1:],
+            "hr:Hvo:gV",
+            ["help", "recipe=", "human-readable", "vpos", "out=", "debug", "version"]
+        )
+    except GetoptError as e:
+        print(e, file=sys.stderr)
+        print(usage_s, file=sys.stderr)
+        sys.exit(2)
+
+    recipe_file: TextIO = sys.stdin
+    readable: bool = False
+    vpos: bool = False
+    out: TextIO = sys.stdout
+    debug: bool = False
+
+    for o, a in opts:
+        if o in ("-H", "--human-readable"):
+            readable = True
+        elif o in ("-v", "--vpos"):
+            vpos = True
+        elif o in ("-r", "--recipe"):
+            try:
+                recipe_file = open(a, "r")
+            except IOError as e:
+                print("error: can't open file for reading", file=sys.stderr)
+                print(e, file=sys.stderr)
+                sys.exit(1)
+        elif o in ("-o", "--out"):
+            try:
+                out = open(a, "w")
+            except IOError as e:
+                print("error: can't open file for writing", file=sys.stderr)
+                print(e, file=sys.stderr)
+                sys.exit(1)
+        elif o in ("-g", "--debug"):
+            debug = True
+        elif o in ("-V", "--version"):
+            print("pdftocgen", pdftocgen.__version__, file=sys.stderr)
+            sys.exit()
+        elif o in ("-h", "--help"):
+            print(help_s, file=sys.stderr)
+            sys.exit()
+
+    if len(args) < 1:
+        print("error: no input pdf is given", file=sys.stderr)
+        print(usage_s, file=sys.stderr)
+        sys.exit(1)
+
+    path_in: str = args[0]
+    # done parsing arguments
+
+    try:
+        with open_pdf(path_in) as doc:
+            recipe = toml.load(recipe_file)
             toc = gen_toc(doc, recipe)
-            if args.human_readable:
-                print(pprint_toc(toc), file=args.out)
+            if readable:
+                print(pprint_toc(toc), file=out)
             else:
-                print(dump_toc(toc, args.vpos), end="", file=args.out)
+                print(dump_toc(toc, vpos), end="", file=out)
     except ValueError as e:
-        if args.debug:
+        if debug:
             raise e
         print("error:", e, file=sys.stderr)
         sys.exit(1)
     except IOError as e:
-        if args.debug:
+        if debug:
             raise e
         print("error: unable to open file", file=sys.stderr)
         print(e, file=sys.stderr)
         sys.exit(1)
     except KeyboardInterrupt as e:
-        if args.debug:
+        if debug:
             raise e
         print("error: interrupted", file=sys.stderr)
         sys.exit(1)
