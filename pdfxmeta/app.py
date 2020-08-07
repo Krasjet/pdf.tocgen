@@ -91,6 +91,7 @@ def main():
             try:
                 out = open(a, "w")
             except IOError as e:
+                print("error: can't open file for writing", file=sys.stderr)
                 print(e, file=sys.stderr)
                 sys.exit(1)
         elif o in ("-V", "--version"):
