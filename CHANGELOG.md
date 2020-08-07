@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.2.1
+----------------
+
+Released August 7, 2020
+
+- Fix a typo in the help message of `pdftocgen`.
+
 pdf.tocgen 1.2.0
 ----------------
 
