@@ -1,6 +1,16 @@
 Change log
 ==========
 
+pdf.tocgen 1.2.0
+----------------
+
+Released August 7, 2020
+
+- Swap out argparse in favor of getopt, which is much simpler and more
+  flexible.
+- Now we could use `pdfxmeta doc.pdf` to dump an entire document, without the
+  empty pattern `""`.
+
 pdf.tocgen 1.1.3
 ----------------
 
