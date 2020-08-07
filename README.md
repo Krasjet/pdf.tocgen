@@ -390,7 +390,7 @@ anaphoric if, called:
 To dump the entire page of 203:
 
 ```console
-$ pdfxmeta -p 203 onlisp.pdf ""
+$ pdfxmeta -p 203 onlisp.pdf
 190:
     font.name = "Times-Roman"
     font.size = 9.962599754333496
@@ -410,7 +410,7 @@ $ pdfxmeta -p 203 onlisp.pdf ""
 To dump the entire PDF document:
 
 ```console
-$ pdfxmeta onlisp.pdf ""
+$ pdfxmeta onlisp.pdf
 i:
     font.name = "Times-Roman"
     font.size = 9.962599754333496
