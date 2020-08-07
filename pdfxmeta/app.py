@@ -40,20 +40,20 @@ where the argument of -a is the level of the heading filter, which in this case
 is 2.
 
 arguments
-    doc.pdf         path to the input PDF document
-    [pattern]       the pattern to search for (python regex). if not given,
-                    dump the entire document
+    doc.pdf          path to the input PDF document
+    [pattern]        the pattern to search for (python regex). if not given,
+                     dump the entire document
 
 options
-  -h, --help              show help
-  -p PAGE, --page PAGE    specify the page to search for (1-based index)
-  -i, --ignore-case       when flag is set, search will be case-insensitive
-  -a level, --auto level  when flag is set, the output would be a valid heading
-                          filter of the specified heading level in default
-                          settings. it is directly usable by pdftocgen.
-  -o file, --out file     path to the output file. if this flag is not
-                          specified, the default is stdout
-  -V, --version           show version number
+  -h, --help         show help
+  -p, --page=PAGE    specify the page to search for (1-based index)
+  -i, --ignore-case  when flag is set, search will be case-insensitive
+  -a, --auto=LEVEL   when flag is set, the output would be a valid heading
+                     filter of the specified heading level in default
+                     settings. it is directly usable by pdftocgen.
+  -o, --out=FILE     path to the output file. if this flag is not
+                     specified, the default is stdout
+  -V, --version      show version number
 """.strip()
 
 
