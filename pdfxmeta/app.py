@@ -40,8 +40,8 @@ where the argument of -a is the level of the heading filter, which in this case
 is 2.
 
 arguments
-    doc.pdf          path to the input PDF document
-    [pattern]        the pattern to search for (python regex). if not given,
+  doc.pdf            path to the input PDF document
+  [pattern]          the pattern to search for (python regex). if not given,
                      dump the entire document
 
 options
