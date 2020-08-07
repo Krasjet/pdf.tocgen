@@ -1,78 +1,60 @@
 """The executable of pdfxmeta"""
 
-import argparse
+import getopt
 import sys
 import pdfxmeta
 
-from argparse import Namespace
+from getopt import GetoptError
+from typing import Optional, TextIO
 from fitzutils import open_pdf
-from textwrap import indent, dedent
+from textwrap import indent
 from pdfxmeta import dump_meta, dump_toml, extract_meta
 
 
-def getargs() -> Namespace:
-    """parse commandline arguments"""
+usage_s = """
+usage: pdfxmeta [options] doc.pdf [pattern]
+""".strip()
 
-    app_desc = dedent("""
-    pdfxmeta: extract metadata for a string in a pdf document.
+help_s = """
+usage: pdfxmeta [options] doc.pdf [pattern]
 
-    To use this command, first open up the pdf file your favorite pdf reader
-    and find the string you want to search for. Then use
+Extract the metadata for pattern in doc.pdf.
 
-        $ pdfxmeta -p 1 in.pdf "Subsection One"
+To use this command, first open up the pdf file your favorite pdf reader and
+find the text you want to search for. Then use
 
-    to find the metadata, mainly the font attributes and bounding box, of lines
-    containing the pattern "Subsection One" on page 1. Specifying a page number
-    is optional but highly recommended, since it greatly reduces the ambiguity
-    of matches and execution time.
+    $ pdfxmeta -p 1 in.pdf "Subsection One"
 
-    The output of this command can be directly copy-pasted to build a recipe
-    file for pdftocgen. Alternatively, you could also use the --auto or -a flag
-    to output a valid heading filter directly
+to find the metadata, mainly the font attributes and bounding box, of lines
+containing the pattern "Subsection One" on page 1. Specifying a page number is
+optional but highly recommended, since it greatly reduces the ambiguity of
+matches and execution time.
 
-        $ pdfxmeta -p 1 -a 2 in.pdf "Subsection One" >> recipe.toml
+The output of this command can be directly copy-pasted to build a recipe file
+for pdftocgen. Alternatively, you could also use the --auto or -a flag to
+output a valid heading filter directly
 
-    where the argument of -a is the level of the heading filter, which in this
-    case is 2.
-    """)
-    parser = argparse.ArgumentParser(
-        description=app_desc,
-        formatter_class=argparse.RawDescriptionHelpFormatter
-    )
+    $ pdfxmeta -p 1 -a 2 in.pdf "Subsection One" >> recipe.toml
 
-    parser.add_argument('input',
-                        metavar='in.pdf',
-                        help="path to the input pdf file")
-    parser.add_argument('pattern',
-                        help="the pattern to search for (python regex)")
-    parser.add_argument('-p', '--page',
-                        type=int,
-                        help="""specify the page in which the string occurs
-                        (1-based index)""")
-    parser.add_argument('-i', '--ignore-case',
-                        action='store_true',
-                        help="""when flag is set, search will be
-                        case-insensitive""")
-    parser.add_argument('-a', '--auto',
-                        metavar='level',
-                        type=int,
-                        const=1,
-                        nargs='?',
-                        help="""when flag is set, the output would be a valid
-                        heading filter of the specified level with the most
-                        common settings, directly usable by pdftocgen. the
-                        default level is 1""")
-    parser.add_argument('-o', '--out',
-                        metavar="file",
-                        type=argparse.FileType('w'),
-                        default='-',
-                        help="""path to the output file.  if this flag is not
-                        specified, the default is stdout""")
-    parser.add_argument('-V', '--version',
-                        action='version',
-                        version='%(prog)s ' + pdfxmeta.__version__)
+where the argument of -a is the level of the heading filter, which in this case
+is 2.
 
-    return parser.parse_args()
+arguments
+    doc.pdf         path to the input PDF document
+    [pattern]       the pattern to search for (python regex). if not given,
+                    dump the entire document
+
+options
+  -h, --help              show help
+  -p PAGE, --page PAGE    specify the page to search for (1-based index)
+  -i, --ignore-case       when flag is set, search will be case-insensitive
+  -a level, --auto level  when flag is set, the output would be a valid heading
+                          filter of the specified heading level in default
+                          settings. it is directly usable by pdftocgen.
+  -o file, --out file     path to the output file. if this flag is not
+                          specified, the default is stdout
+  -V, --version           show version number
+""".strip()
 
 
 def print_result(meta: str) -> str:
@@ -81,21 +63,71 @@ def print_result(meta: str) -> str:
 
 
 def main():
-    args = getargs()
+    # parse arguments
+    try:
+        opts, args = getopt.gnu_getopt(
+            sys.argv[1:],
+            "hiVp:a:o:",
+            ["help", "ignore-case", "version", "page=", "auto=", "out="]
+        )
+    except GetoptError as e:
+        print(e, file=sys.stderr)
+        print(usage_s, file=sys.stderr)
+        sys.exit(2)
 
-    with open_pdf(args.input) as doc:
-        meta = extract_meta(doc, args.pattern, args.page, args.ignore_case)
+    ignore_case: bool = False
+    page: Optional[int] = None
+    auto_level: Optional[int] = None
+    out: TextIO = sys.stdout
+
+    for o, a in opts:
+        if o in ("-i", "--ignore-case"):
+            ignore_case = True
+        elif o in ("-p", "--page"):
+            page = int(a)
+        elif o in ("-a", "--auto"):
+            auto_level = int(a)
+        elif o in ("-o", "--out"):
+            try:
+                out = open(a, "w")
+            except IOError as e:
+                print(e, file=sys.stderr)
+                sys.exit(1)
+        elif o in ("-V", "--version"):
+            print("pdfxmeta", pdfxmeta.__version__, file=sys.stderr)
+            sys.exit()
+        elif o in ("-h", "--help"):
+            print(help_s, file=sys.stderr)
+            sys.exit()
+
+    argc = len(args)
+
+    if argc < 1:
+        print("error: no input pdf is given", file=sys.stderr)
+        print(usage_s, file=sys.stderr)
+        sys.exit(1)
+
+    path_in: str = args[0]
+    pattern: str = ""
+
+    if argc >= 2:
+        pattern = args[1]
+
+    # done parsing arguments
+
+    with open_pdf(path_in) as doc:
+        meta = extract_meta(doc, pattern, page, ignore_case)
 
         # nothing found
         if len(meta) == 0:
             sys.exit(1)
 
         # should we add \n between each output?
-        addnl = not args.out.isatty()
+        addnl = not out.isatty()
 
-        if args.auto:
+        if auto_level:
             print('\n'.join(
-                [dump_toml(m, args.auto, addnl) for m in meta]
-            ), file=args.out)
+                [dump_toml(m, auto_level, addnl) for m in meta]
+            ), file=out)
         else:
-            print('\n'.join(map(print_result, meta)), file=args.out)
+            print('\n'.join(map(print_result, meta)), file=out)
