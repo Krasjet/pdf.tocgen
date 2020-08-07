@@ -21,7 +21,7 @@ Generate PDF table of contents from a recipe file.
 
 This command automatically generates a table of contents for doc.pdf based on
 the font attributes and position of headings specified in a TOML recipe file.
-See the [1] for an introduction to the recipe file.
+See [1] for an introduction to recipe files.
 
 To generate the table of contents for a pdf, use input redirection or pipes to
 supply a recipe file
