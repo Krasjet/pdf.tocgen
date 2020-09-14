@@ -463,6 +463,14 @@ running:
 $ make test
 ```
 
+GUI front end
+-------------
+
+If you are a Emacs user, Daniel Nicolai's [toc-mode][tocmode] package provides
+a GUI front end for pdf.tocgen with some extra functionalities. Note that it
+uses pdf.tocgen under the hood, so you still need to install pdf.tocgen before
+installing toc-mode.
+
 License
 -------
 
@@ -494,3 +502,4 @@ requests or suggestions.
 [mupdf]: https://mupdf.com/docs/index.html
 [cc]: https://creativecommons.org/licenses/by-nc-sa/4.0/
 [donate]: https://krasjet.com/life.sustainer/
+[tocmode]: https://github.com/dalanicolai/toc-mode
