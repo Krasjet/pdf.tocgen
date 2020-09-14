@@ -151,8 +151,8 @@ $ pdftocio in.pdf < toc
 Each of the three programs has some extra functionalities. Use the `-h` option
 to see all the options you could pass in.
 
-More examples
--------------
+Command examples
+----------------
 
 Because of the modularity of design, each program is useful on its own, despite
 being part of the pipeline. This section will provide some more examples on how
