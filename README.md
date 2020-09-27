@@ -466,10 +466,11 @@ $ make test
 GUI front end
 -------------
 
-If you are a Emacs user, Daniel Nicolai's [toc-mode][tocmode] package provides
-a GUI front end for pdf.tocgen with some extra functionalities. Note that it
-uses pdf.tocgen under the hood, so you still need to install pdf.tocgen before
-installing toc-mode.
+If you are a Emacs user, you could install Daniel Nicolai's [toc-mode][tocmode]
+package as a GUI front end for pdf.tocgen, though it offers many more
+functionalities, such as extracting (printed) table of contents from a PDF
+file. Note that it uses pdf.tocgen under the hood, so you still need to install
+pdf.tocgen before using toc-mode as a front end for pdf.tocgen.
 
 License
 -------
