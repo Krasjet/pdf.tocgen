@@ -1,5 +1,5 @@
 Section One:
-    font.name = "TZOLRB+CMBX12"
+    font.name = "CMBX12"
     font.size = 14.346199989318848
     font.color = 0x000000
     font.superscript = false
@@ -12,7 +12,7 @@ Section One:
     bbox.right = 243.12905883789062
     bbox.bottom = 252.00897216796875
 Section Two:
-    font.name = "TZOLRB+CMBX12"
+    font.name = "CMBX12"
     font.size = 14.346199989318848
     font.color = 0x000000
     font.superscript = false

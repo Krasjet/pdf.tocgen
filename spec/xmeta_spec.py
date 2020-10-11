@@ -81,7 +81,7 @@ with description("dump_meta:") as self:
         self.doc = fitz.open(os.path.join(dirpath, "files/level2.pdf"))
         self.expected_meta = {
             'font': {
-                'name': 'TZOLRB+CMBX12',
+                'name': 'CMBX12',
                 'size': 14.346199989318848,
                 'color': 0x000000,
                 'superscript': False,
