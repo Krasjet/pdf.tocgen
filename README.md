@@ -34,8 +34,9 @@ Please see the [**homepage**][tocgen] for a detailed introduction.
 Installation
 ------------
 
-pdf.tocgen is written in Python 3. It is known to work with Python 3.8 under
-Linux, but unit test suggests Python 3.7 should be the minimum. Use
+pdf.tocgen is written in Python 3. It is known to work with Python 3.7 to 3.9
+on Linux, Windows, and macOS (On BSDs, you probably need to build PyMuPDF
+yourself). Use
 
 ```sh
 $ pip install -U pdf.tocgen

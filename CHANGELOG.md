@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.2.2
+----------------
+
+Released October 11, 2020
+
+- Compatibility with Python 3.9
+
 pdf.tocgen 1.2.1
 ----------------
 
