@@ -24,7 +24,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-PyMuPDF = "^1.17.4"
+PyMuPDF = "^1.18.0"
 toml = "^0.10.1"
 
 [tool.poetry.dev-dependencies]
