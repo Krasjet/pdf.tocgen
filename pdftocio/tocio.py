@@ -8,9 +8,9 @@ from fitzutils import ToCEntry
 def write_toc(doc: Document, toc: List[ToCEntry]):
     """Write table of contents to a document"""
     fitz_toc = list(map(lambda e: e.to_fitz_entry(), toc))
-    doc.setToC(fitz_toc)
+    doc.set_toc(fitz_toc)
 
 
 def read_toc(doc: Document) -> List[ToCEntry]:
     """Read table of contents from a document"""
-    return [ToCEntry(*entry) for entry in doc.getToC()]
+    return [ToCEntry(*entry) for entry in doc.get_toc()]

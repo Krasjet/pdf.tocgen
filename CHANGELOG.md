@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.2.3
+----------------
+
+Released January 7, 2021
+
+- Compatibility with PyMuPDF 1.18.6
+
 pdf.tocgen 1.2.2
 ----------------
 
