@@ -42,7 +42,7 @@ to install it for the current user. I would recommend the latter approach to
 avoid messing up the package manager on your system.
 
 If you are using an Arch-based Linux distro, the package is also available on
-AUR [9]. It can be installed using any AUR helper, for example yay:
+AUR [8]. It can be installed using any AUR helper, for example yay:
 
     $ yay -S pdf.tocgen
 
@@ -163,7 +163,7 @@ running:
 GUI front end
 -------------
 
-If you are a Emacs user, you could install Daniel Nicolai's toc-mode [10]
+If you are a Emacs user, you could install Daniel Nicolai's toc-mode [9]
 package as a GUI front end for pdf.tocgen, though it offers many more
 functionalities, such as extracting (printed) table of contents from a PDF file.
 Note that it uses pdf.tocgen under the hood, so you still need to install
@@ -184,14 +184,6 @@ the AGPLv3 license is included in the repository.
 If you want to make any derivatives based on this project, please follow the
 terms of the GNU GPLv3 license.
 
-Support
--------
-
-Even though pdf.tocgen is free to use and free to tinker with, I do accept
-donations [8] if you find this tool useful and want to support me and this
-project in any means, though I won't promise to prioritize your feature
-requests or suggestions.
-
 
 [1]: https://krasjet.com/voice/pdf.tocgen/
 [2]: https://en.wikipedia.org/wiki/Unix_philosophy
@@ -200,6 +192,5 @@ requests or suggestions.
 [5]: https://github.com/pymupdf/PyMuPDF
 [6]: https://mupdf.com/docs/index.html
 [7]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[8]: https://krasjet.com/life.sustainer/
-[9]: https://aur.archlinux.org/packages/pdf.tocgen/
-[10]: https://github.com/dalanicolai/toc-mode
+[8]: https://aur.archlinux.org/packages/pdf.tocgen/
+[9]: https://github.com/dalanicolai/toc-mode

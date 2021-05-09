@@ -488,14 +488,6 @@ license. A copy of the AGPLv3 license is included in the repository.
 If you want to make any derivatives based on this project, please follow the
 terms of the GNU GPLv3 license.
 
-Support
--------
-
-Even though pdf.tocgen is free to use and free to tinker with, I do accept
-[donations][donate] if you find this tool useful and want to support me and
-this project in any means, though I won't promise to prioritize your feature
-requests or suggestions.
-
 [tocgen]: https://krasjet.com/voice/pdf.tocgen/
 [unix]: https://en.wikipedia.org/wiki/Unix_philosophy
 [ex]: https://krasjet.com/voice/pdf.tocgen/#a-worked-example
@@ -503,5 +495,4 @@ requests or suggestions.
 [pymupdf]: https://github.com/pymupdf/PyMuPDF
 [mupdf]: https://mupdf.com/docs/index.html
 [cc]: https://creativecommons.org/licenses/by-nc-sa/4.0/
-[donate]: https://krasjet.com/life.sustainer/
 [tocmode]: https://github.com/dalanicolai/toc-mode
