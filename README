@@ -13,62 +13,68 @@ pdf.tocgen
 |          |          |           |         |          |
 +----------+          +-----------+         +----------+
 
-pdf.tocgen is a set of command-line tools for automatically extracting and
-generating the table of contents (ToC) of a PDF file. It uses the embedded font
-attributes and position of headings to deduce the basic outline of a PDF file.
+pdf.tocgen is a set of command-line tools for automatically
+extracting and generating the table of contents (ToC) of a
+PDF file. It uses the embedded font attributes and position
+of headings to deduce the basic outline of a PDF file.
 
-It works best for PDF files produces from a TeX document using pdftex (and its
-friends pdflatex, pdfxetex, etc.), but it's designed to work with any
-*software-generated* PDF files (i.e. you shouldn't expect it to work with
-scanned PDFs). Some examples include troff/groff, Adobe InDesign, Microsoft
-Word, and probably more.
+It works best for PDF files produces from a TeX document
+using pdftex (and its friends pdflatex, pdfxetex, etc.), but
+it's designed to work with any *software-generated* PDF
+files (i.e. you shouldn't expect it to work with scanned
+PDFs). Some examples include troff/groff, Adobe InDesign,
+Microsoft Word, and probably more.
 
 Please see the homepage [1] for a detailed introduction.
 
 Installation
 ------------
 
-pdf.tocgen is written in Python 3. It is known to work with Python 3.7 to 3.9
-on Linux, Windows, and macOS (On BSDs, you probably need to build PyMuPDF
-yourself). Use
+pdf.tocgen is written in Python 3. It is known to work with
+Python 3.7 to 3.9 on Linux, Windows, and macOS (On BSDs, you
+probably need to build PyMuPDF yourself). Use
 
     $ pip install -U pdf.tocgen
 
-to install the latest version systemwide. Alternatively, use `pipx` or
+to install the latest version systemwide. Alternatively, use
+`pipx` or
 
     $ pip install -U --user pdf.tocgen
 
-to install it for the current user. I would recommend the latter approach to
-avoid messing up the package manager on your system.
+to install it for the current user. I would recommend the
+latter approach to avoid messing up the package manager on
+your system.
 
-If you are using an Arch-based Linux distro, the package is also available on
-AUR [8]. It can be installed using any AUR helper, for example yay:
+If you are using an Arch-based Linux distro, the package is
+also available on AUR [8]. It can be installed using any AUR
+helper, for example yay:
 
     $ yay -S pdf.tocgen
 
 Workflow
 --------
 
-The design of pdf.tocgen is influenced by the Unix philosophy [2]. I inten-
-tionally separated pdf.tocgen to 3 separate programs. They work together, but
-each of them is useful on their own.
+The design of pdf.tocgen is influenced by the Unix philosophy [2].
+I intentionally separated pdf.tocgen to 3 separate programs.
+They work together, but each of them is useful on their own.
 
-1. pdfxmeta: extract the metadata (font attributes, positions) of headings to
-             build a *recipe* file.
+1. pdfxmeta: extract the metadata (font attributes, positions)
+             of headings to build a *recipe* file.
 2. pdftocgen: generate a table of contents from the recipe.
 3. pdftocio: import the table of contents to the PDF document.
 
-You should read the example [3] on the homepage for a proper introduction, but
-the basic workflow follows like this.
+You should read the example [3] on the homepage for a proper
+introduction, but the basic workflow follows like this.
 
-First, use pdfxmeta to search for the metadata of headings, and generate
-*heading filters* using the automatic setting
+First, use pdfxmeta to search for the metadata of headings,
+and generate *heading filters* using the automatic setting
 
     $ pdfxmeta -p page -a 1 in.pdf "Section" >> recipe.toml
     $ pdfxmeta -p page -a 2 in.pdf "Subsection" >> recipe.toml
 
-The output `recipe.toml` file would contain several heading filters, each of
-which specifies the attribute of a heading at a particular level should have.
+The output `recipe.toml` file would contain several heading
+filters, each of which specifies the attribute of a heading
+at a particular level should have.
 
 An example recipe file would look like this:
 
@@ -84,7 +90,8 @@ An example recipe file would look like this:
     font.name = "Times-Bold"
     font.size = 11.9552001953125
 
-Then pass the recipe to `pdftocgen` to generate a table of contents,
+Then pass the recipe to `pdftocgen` to generate a table of
+contents,
 
     $ pdftocgen in.pdf < recipe.toml
     "Preface" 5
@@ -117,32 +124,35 @@ Then pass the recipe to `pdftocgen` to generate a table of contents,
         "3.4 Interactive Programming" 50
     [--snip--]
 
-which can be directly imported to the PDF file using `pdftocio`,
+which can be directly imported to the PDF file using
+`pdftocio`,
 
     $ pdftocgen in.pdf < recipe.toml | pdftocio -o out.pdf in.pdf
 
-Or if you want to edit the table of contents before importing it,
+Or if you want to edit the table of contents before
+importing it,
 
     $ pdftocgen in.pdf < recipe.toml > toc
     $ vim toc # edit
     $ pdftocio in.pdf < toc
 
-Each of the three programs has some extra functionalities. Use the -h option
-to see all the options you could pass in.
+Each of the three programs has some extra functionalities.
+Use the -h option to see all the options you could pass in.
 
 Development
 -----------
 
-If you want to modify the source code or contribute anything, first install
-poetry [4], which is a dependency and package manager for Python used by
-pdf.tocgen. Then run
+If you want to modify the source code or contribute anything,
+first install poetry [4], which is a dependency and package
+manager for Python used by pdf.tocgen. Then run
 
     $ poetry install
 
-in the root directory of this repository to set up development dependencies.
+in the root directory of this repository to set up
+development dependencies.
 
-If you want to test the development version of pdf.tocgen, use the `poetry run`
-command:
+If you want to test the development version of pdf.tocgen,
+use the `poetry run` command:
 
     $ poetry run pdfxmeta in.pdf "pattern"
 
@@ -150,39 +160,44 @@ Alternatively, you could also use the
 
     $ poetry shell
 
-command to open up a virtual environment and run the development version
-directly:
+command to open up a virtual environment and run the
+development version directly:
 
     (pdf.tocgen) $ pdfxmeta in.pdf "pattern"
 
-Before you send a patch or pull request, make sure the unit test passes by
-running:
+Before you send a patch or pull request, make sure the unit
+test passes by running:
 
     $ make test
 
 GUI front end
 -------------
 
-If you are a Emacs user, you could install Daniel Nicolai's toc-mode [9]
-package as a GUI front end for pdf.tocgen, though it offers many more
-functionalities, such as extracting (printed) table of contents from a PDF file.
-Note that it uses pdf.tocgen under the hood, so you still need to install
-pdf.tocgen before using toc-mode as a front end for pdf.tocgen.
+If you are a Emacs user, you could install Daniel Nicolai's
+toc-mode [9] package as a GUI front end for pdf.tocgen,
+though it offers many more functionalities, such as
+extracting (printed) table of contents from a PDF file. Note
+that it uses pdf.tocgen under the hood, so you still need to
+install pdf.tocgen before using toc-mode as a front end for
+pdf.tocgen.
 
 License
 -------
 
-pdf.tocgen itself a is free software. The source code of pdf.tocgen is licensed
-under the GNU GPLv3 license. However, the recipes in the `recipes` directory is
-separately licensed under the CC BY-NC-SA 4.0 License [7] to prevent any
-commercial usage, and thus not included in the distribution.
+pdf.tocgen itself a is free software. The source code of
+pdf.tocgen is licensed under the GNU GPLv3 license. However,
+the recipes in the `recipes` directory is separately
+licensed under the CC BY-NC-SA 4.0 License [7] to prevent
+any commercial usage, and thus not included in the
+distribution.
 
-pdf.tocgen is based on PyMuPDF [5], licensed under the GNU GPLv3 license, which
-is again based on MuPDF [6], licensed under the GNU AGPLv3 license. A copy of
-the AGPLv3 license is included in the repository.
+pdf.tocgen is based on PyMuPDF [5], licensed under the GNU
+GPLv3 license, which is again based on MuPDF [6], licensed
+under the GNU AGPLv3 license. A copy of the AGPLv3 license
+is included in the repository.
 
-If you want to make any derivatives based on this project, please follow the
-terms of the GNU GPLv3 license.
+If you want to make any derivatives based on this project,
+please follow the terms of the GNU GPLv3 license.
 
 
 [1]: https://krasjet.com/voice/pdf.tocgen/
