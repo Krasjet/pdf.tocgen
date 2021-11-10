@@ -61,7 +61,7 @@ options
 """.strip()
 
 
-def print_result(meta: str) -> str:
+def print_result(meta: dict) -> str:
     """pretty print results in a structured manner"""
     return f"{meta.get('text', '')}:\n{indent(dump_meta(meta), '    ')}"
 

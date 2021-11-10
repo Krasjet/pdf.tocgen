@@ -26,7 +26,7 @@ def extract_meta(doc: Document,
 
     if page is None:
         pages = doc.pages()
-    elif 1 <= page <= doc.pageCount:
+    elif 1 <= page <= doc.page_count:
         pages = [doc[page - 1]]
     else:  # page out of range
         return result
@@ -55,7 +55,7 @@ def search_in_page(regex: re.Pattern, page: Page) -> List[dict]:
     """
     result = []
 
-    page_meta = page.getTextPage().extractDICT()
+    page_meta = page.get_textpage().extractDICT()
 
     # we are using get(key, []) to bypass any missing key errors
     for blk in page_meta.get('blocks', []):

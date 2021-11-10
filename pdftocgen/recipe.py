@@ -166,7 +166,7 @@ def extract_toc(doc: Document, recipe: Recipe) -> List[ToCEntry]:
     result = []
 
     for page in doc.pages():
-        for blk in page.getTextPage().extractDICT().get('blocks', []):
+        for blk in page.get_textpage().extractDICT().get('blocks', []):
             result.extend(
                 recipe.extract_block(blk, page.number + 1)
             )
