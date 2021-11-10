@@ -60,7 +60,7 @@ class FontFilter:
         self.size = font_dict.get('size')
         self.size_tolerance = font_dict.get('size_tolerance', DEF_TOLERANCE)
         self.color = font_dict.get('color')
-        # some branchless trick
+        # some branchless trick, mainly to save space
         # x * True = x
         # x * False = 0
         self.flags = (0b00001 * font_dict.get('superscript', False) |

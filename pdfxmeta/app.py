@@ -20,37 +20,41 @@ usage: pdfxmeta [options] doc.pdf [pattern]
 
 Extract the metadata for pattern in doc.pdf.
 
-To use this command, first open up the pdf file your favorite pdf reader and
-find the text you want to search for. Then use
+To use this command, first open up the pdf file with your
+favorite pdf reader and find the text you want to search
+for. Then use
 
     $ pdfxmeta -p 1 in.pdf "Subsection One"
 
-to find the metadata, mainly the font attributes and bounding box, of lines
-containing the pattern "Subsection One" on page 1. Specifying a page number is
-optional but highly recommended, since it greatly reduces the ambiguity of
-matches and execution time.
+to find the metadata, mainly the font attributes and
+bounding box, of lines containing the pattern "Subsection
+One" on page 1. Specifying a page number is optional but
+highly recommended, since it greatly reduces the ambiguity
+of matches and execution time.
 
-The output of this command can be directly copy-pasted to build a recipe file
-for pdftocgen. Alternatively, you could also use the --auto or -a flag to
-output a valid heading filter directly
+The output of this command can be directly copy-pasted to
+build a recipe file for pdftocgen. Alternatively, you could
+also use the --auto or -a flag to output a valid heading
+filter directly
 
     $ pdfxmeta -p 1 -a 2 in.pdf "Subsection One" >> recipe.toml
 
-where the argument of -a is the level of the heading filter, which in this case
-is 2.
+where the argument of -a is the level of the heading filter,
+which in this case is 2.
 
 arguments
   doc.pdf            path to the input PDF document
-  [pattern]          the pattern to search for (python regex). if not given,
-                     dump the entire document
+  [pattern]          the pattern to search for (python regex). if not
+                     given, dump the entire document
 
 options
   -h, --help         show help
   -p, --page=PAGE    specify the page to search for (1-based index)
   -i, --ignore-case  when flag is set, search will be case-insensitive
-  -a, --auto=LEVEL   when flag is set, the output would be a valid heading
-                     filter of the specified heading level in default
-                     settings. it is directly usable by pdftocgen.
+  -a, --auto=LEVEL   when flag is set, the output would be a valid
+                     heading filter of the specified heading level in
+                     default settings. it is directly usable by
+                     pdftocgen.
   -o, --out=FILE     path to the output file. if this flag is not
                      specified, the default is stdout
   -V, --version      show version number
