@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.3.0
+----------------
+
+Released November 10, 2021
+
+- Fix deprecation warning from PyMuPDF
+
 pdf.tocgen 1.2.3
 ----------------
 
