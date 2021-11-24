@@ -104,7 +104,7 @@ def main():
             print_toc = True
         elif o in ("-t", "--toc"):
             try:
-                toc_file = open(a, "r")
+                toc_file = open(a, "r", encoding="utf-8")
             except IOError as e:
                 print("error: can't open file for reading", file=sys.stderr)
                 print(e, file=sys.stderr)
