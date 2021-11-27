@@ -26,6 +26,7 @@ packages = [
 python = "^3.7"
 PyMuPDF = "^1.18.14"
 toml = "^0.10.2"
+charset = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.5.3"
