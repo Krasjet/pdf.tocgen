@@ -7,7 +7,7 @@ import getopt
 
 from typing import Optional, TextIO
 from getopt import GetoptError
-from fitzutils import open_pdf, dump_toc, pprint_toc
+from fitzutils import open_pdf, dump_toc, pprint_toc, check_charset
 from .tocparser import parse_toc
 from .tocio import write_toc, read_toc
 
@@ -104,7 +104,7 @@ def main():
             print_toc = True
         elif o in ("-t", "--toc"):
             try:
-                toc_file = open(a, "r")
+                toc_file = open(a, "r", encoding=check_charset(a))
             except IOError as e:
                 print("error: can't open file for reading", file=sys.stderr)
                 print(e, file=sys.stderr)

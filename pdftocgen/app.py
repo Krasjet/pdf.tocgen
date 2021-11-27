@@ -7,7 +7,7 @@ import pdftocgen
 
 from getopt import GetoptError
 from typing import TextIO
-from fitzutils import open_pdf, dump_toc, pprint_toc
+from fitzutils import open_pdf, dump_toc, pprint_toc, check_charset
 from .tocgen import gen_toc
 
 usage_s = """
@@ -102,7 +102,7 @@ def main():
             vpos = True
         elif o in ("-r", "--recipe"):
             try:
-                recipe_file = open(a, "r")
+                recipe_file = open(a, "r", encoding=check_charset(a))
             except IOError as e:
                 print("error: can't open file for reading", file=sys.stderr)
                 print(e, file=sys.stderr)

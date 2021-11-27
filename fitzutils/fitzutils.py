@@ -7,7 +7,13 @@ import sys
 import fitz
 import io
 import csv
+import chardet
 
+def check_charset(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read(4)
+        charset = chardet.detect(data)['encoding']
+    return charset
 
 @contextmanager
 def open_pdf(path: str,
