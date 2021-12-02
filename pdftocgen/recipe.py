@@ -4,6 +4,7 @@ from .filter import ToCFilter
 from fitzutils import ToCEntry
 from itertools import chain
 from collections import defaultdict
+from typing import Iterator
 from fitz import Document
 
 
@@ -44,7 +45,7 @@ class Fragment:
     level: int
 
 
-def concatFrag(frags: List[Optional[Fragment]], sep: str = " ") -> Dict[int, str]:
+def concatFrag(frags: Iterator[Optional[Fragment]], sep: str = " ") -> Dict[int, str]:
     """Concatenate fragments to strings
 
     Returns
