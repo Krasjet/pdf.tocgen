@@ -142,7 +142,7 @@ class Recipe:
 
         try:
             frags = chain.from_iterable([
-                self._extract_line(ln) for ln in block.get('lines')
+                self._extract_line(ln) for ln in block.get('lines', [])
             ])
             titles = concatFrag(frags)
 
