@@ -138,12 +138,14 @@ class ToCFilter:
     bbox: BoundingBoxFilter
 
     def __init__(self, fltr_dict: dict):
-        self.level = fltr_dict.get('level')
+        self._level = fltr_dict.get('level')
 
-        if self.level is None:
+        if self._level is None:
             raise ValueError("filter's 'level' is not set")
-        if self.level < 1:
+        if self._level < 1:
             raise ValueError("filter's 'level' must be >= 1")
+
+        self.level = self._level
 
         self.greedy = fltr_dict.get('greedy', False)
         self.font = FontFilter(fltr_dict.get('font', {}))
