@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Iterator
 from .filter import ToCFilter
 from fitzutils import ToCEntry
 from itertools import chain
@@ -44,7 +44,7 @@ class Fragment:
     level: int
 
 
-def concatFrag(frags: List[Optional[Fragment]], sep: str = " ") -> Dict[int, str]:
+def concatFrag(frags: Iterator[Optional[Fragment]], sep: str = " ") -> Dict[int, str]:
     """Concatenate fragments to strings
 
     Returns
