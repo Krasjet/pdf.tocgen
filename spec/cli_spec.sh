@@ -57,3 +57,7 @@ checkeq <(pdftocgen "$SPEC/hardmode.pdf" < "$SPEC/hardmode_recipe.toml" | \
 it "prints toc when -p is set"
 checkeq <(pdftocio -p "$SPEC/hastoc.pdf" < $SPEC/level2.toc) \
         "$SPEC/hastoc.toc"
+
+it "prints toc vpos when -v is set"
+checkeq <(pdftocio -v "$SPEC/hastoc.pdf") \
+        "$SPEC/hastoc_v.toc"

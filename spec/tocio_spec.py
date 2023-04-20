@@ -15,30 +15,38 @@ with description("read_toc") as self:
         self.doc = fitz.open(level2)
         self.reference = fitz.open(hastoc)
         self.expect = [
-            ToCEntry(level=1, title='Section One', pagenum=1),
-            ToCEntry(level=1, title='Section Two', pagenum=1),
-            ToCEntry(level=2, title='Subsection Two.One', pagenum=2),
+            ToCEntry(level=1, title='Section One', pagenum=1, vpos=235.0),
+            ToCEntry(level=1, title='Section Two', pagenum=1, vpos=562.0),
+            ToCEntry(level=2, title='Subsection Two.One', pagenum=2, vpos=450.0),
             ToCEntry(level=1,
                      title='Section Three, with looong loooong looong title',
-                     pagenum=3),
+                     pagenum=3,
+                     vpos=330.0),
             ToCEntry(level=2,
                      title='Subsection Three.One, '
                      'with even loooooooooooonger title, and probably even more',
-                     pagenum=3),
+                     pagenum=3,
+                     vpos=616.0),
             ToCEntry(level=2, title='Subsection Three.Two',
-                     pagenum=4),
+                     pagenum=4, vpos=509.0),
             ToCEntry(level=2, title='Subsection Three.Three',
-                     pagenum=5),
-            ToCEntry(level=1, title='The End', pagenum=5)
+                     pagenum=5, vpos=125.0),
+            ToCEntry(level=1, title='The End', pagenum=5, vpos=361.0)
         ]
 
     with it("reads pdf toc correctly"):
         assert self.expect == read_toc(self.reference)
 
-    with it("makes (read_toc -> write_toc -> read_toc) an identity operation"):
+    with it("makes (read_toc -> write_toc -> read_toc) an identity operation (except vpos)"):
         toc = read_toc(self.reference)
         write_toc(self.doc, toc)
-        assert read_toc(self.doc) == self.expect
+        toc2 = read_toc(self.doc)
+
+        assert len(toc2) == len(toc)
+        for e1, e2 in zip(toc, toc2):
+            assert e1.level == e2.level
+            assert e1.title == e2.title
+            assert e1.pagenum == e2.pagenum
 
 with description("write_toc") as self:
     with before.all:
@@ -62,6 +70,12 @@ with description("write_toc") as self:
             ToCEntry(level=1, title='The End', pagenum=5)
         ]
 
-    with it("makes (write_toc -> read_toc) an identity operation"):
+    with it("makes (write_toc -> read_toc) an identity operation (except vpos)"):
         write_toc(self.doc, self.toc)
-        assert self.toc == read_toc(self.doc)
+        toc2 = read_toc(self.doc)
+
+        assert len(toc2) == len(self.toc)
+        for e1, e2 in zip(self.toc, toc2):
+            assert e1.level == e2.level
+            assert e1.title == e2.title
+            assert e1.pagenum == e2.pagenum

@@ -13,4 +13,8 @@ def write_toc(doc: Document, toc: List[ToCEntry]):
 
 def read_toc(doc: Document) -> List[ToCEntry]:
     """Read table of contents from a document"""
-    return [ToCEntry(*entry) for entry in doc.get_toc()]
+    return [
+        ToCEntry(e[0], e[1], e[2], e[3]['to'].y) if len(e) == 4 else
+        ToCEntry(e[0], e[1], e[2])
+        for e in doc.get_toc(False)
+    ]

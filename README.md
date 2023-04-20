@@ -197,8 +197,11 @@ $ pdftocio -o out.pdf doc.pdf < toc
 To copy the table of contents from `doc1.pdf` to `doc2.pdf`:
 
 ```console
-$ pdftocio doc1.pdf | pdftocio doc2.pdf
+$ pdftocio -v doc1.pdf | pdftocio doc2.pdf
 ```
+
+Note that the `-v` flag helps preserve the vertical
+positions of headings during the copy.
 
 To print the table of contents for reading:
 

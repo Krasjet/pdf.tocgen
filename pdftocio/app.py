@@ -65,6 +65,8 @@ options
                         default is stdin, but if no input is piped or
                         redirected to stdin, this program will instead
                         print the existing ToC of the PDF file
+  -v, --vpos            if this flag is set, the vertical position of
+                        each heading will be dumped to the output
   -p, --print           when flag is set, print the existing ToC in
                         the input PDF file. this flag is usually not
                         necessary, since it is the default behavior
@@ -84,8 +86,8 @@ def main():
     try:
         opts, args = getopt.gnu_getopt(
             sys.argv[1:],
-            "ht:pHo:gV",
-            ["help", "toc=", "print", "human-readable", "out=", "debug", "version"]
+            "hvt:pHo:gV",
+            ["help", "vpos", "toc=", "print", "human-readable", "out=", "debug", "version"]
         )
     except GetoptError as e:
         print(e, file=sys.stderr)
@@ -96,6 +98,7 @@ def main():
     print_toc: bool = False
     readable: bool = False
     out: Optional[str] = None
+    vpos: bool = False
     debug: bool = False
 
     for o, a in opts:
@@ -103,6 +106,8 @@ def main():
             readable = True
         elif o in ("-p", "--print"):
             print_toc = True
+        elif o in ("-v", "--vpos"):
+            vpos = True
         elif o in ("-t", "--toc"):
             try:
                 toc_file = open(a, "r", encoding=get_file_encoding(a))
@@ -144,7 +149,7 @@ def main():
                 if readable:
                     print(pprint_toc(toc), file=stdout)
                 else:
-                    print(dump_toc(toc), end="", file=stdout)
+                    print(dump_toc(toc, vpos), end="", file=stdout)
                 sys.exit(0)
 
             # an input is given, so switch to input mode
