@@ -29,6 +29,13 @@ jobs:
     - name: install dependencies
       shell: bash
       run: poetry install
+    - name: print debug info
+      shell: bash
+      run: |
+        poetry run pdfxmeta -V
+        poetry run pdftocgen -V
+        poetry run pdftocio -V
+        tree
     - name: run tests
       shell: bash
       run: make test

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pdf.tocgen"
-version = "1.3.2"
+version = "1.3.3"
 description = "Automatically generate table of contents for pdf files"
 authors = ["krasjet"]
 license = "GPL-3.0-or-later"
