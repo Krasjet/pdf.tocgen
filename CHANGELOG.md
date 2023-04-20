@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.3.2
+----------------
+
+Released April 20, 2023
+
+- Fix outdated build system
+
 pdf.tocgen 1.3.1
 ----------------
 
