@@ -4,10 +4,11 @@ import toml
 import sys
 import getopt
 import pdftocgen
+import io
 
 from getopt import GetoptError
 from typing import TextIO
-from fitzutils import open_pdf, dump_toc, pprint_toc
+from fitzutils import open_pdf, dump_toc, pprint_toc, get_file_encoding
 from .tocgen import gen_toc
 
 usage_s = """
@@ -89,10 +90,10 @@ def main():
         print(usage_s, file=sys.stderr)
         sys.exit(2)
 
-    recipe_file: TextIO = sys.stdin
+    recipe_file: TextIO = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='ignore')
     readable: bool = False
     vpos: bool = False
-    out: TextIO = sys.stdout
+    out: TextIO = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='ignore')
     debug: bool = False
 
     for o, a in opts:
@@ -102,14 +103,14 @@ def main():
             vpos = True
         elif o in ("-r", "--recipe"):
             try:
-                recipe_file = open(a, "r")
+                recipe_file = open(a, "r", encoding=get_file_encoding(a))
             except IOError as e:
                 print("error: can't open file for reading", file=sys.stderr)
                 print(e, file=sys.stderr)
                 sys.exit(1)
         elif o in ("-o", "--out"):
             try:
-                out = open(a, "w")
+                out = open(a, "w", encoding='utf-8', errors='ignore')
             except IOError as e:
                 print("error: can't open file for writing", file=sys.stderr)
                 print(e, file=sys.stderr)

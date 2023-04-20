@@ -7,6 +7,7 @@ import sys
 import fitz
 import io
 import csv
+import chardet
 
 
 @contextmanager
@@ -92,3 +93,19 @@ def pprint_toc(entries: List[ToCEntry]) -> str:
         f"{(entry.level - 1) * '    '}{entry.title} ··· {entry.pagenum}"
         for entry in entries
     ])
+
+
+def get_file_encoding(path: str) -> str:
+    """Get encoding of file
+
+    Argument
+      path: file path
+    Returns
+      encoding string
+    """
+    try:
+        with open(path, "rb") as f:
+            enc = chardet.detect(f.read()).encoding
+    except:
+        enc = 'utf-8'
+    return enc

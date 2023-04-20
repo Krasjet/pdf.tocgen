@@ -4,10 +4,11 @@ import sys
 import os.path
 import pdftocio
 import getopt
+import io
 
 from typing import Optional, TextIO
 from getopt import GetoptError
-from fitzutils import open_pdf, dump_toc, pprint_toc
+from fitzutils import open_pdf, dump_toc, pprint_toc, get_file_encoding
 from .tocparser import parse_toc
 from .tocio import write_toc, read_toc
 
@@ -91,7 +92,7 @@ def main():
         print(usage_s, file=sys.stderr)
         sys.exit(2)
 
-    toc_file: TextIO = sys.stdin
+    toc_file: TextIO = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='ignore')
     print_toc: bool = False
     readable: bool = False
     out: Optional[str] = None
@@ -104,7 +105,7 @@ def main():
             print_toc = True
         elif o in ("-t", "--toc"):
             try:
-                toc_file = open(a, "r")
+                toc_file = open(a, "r", encoding=get_file_encoding(a))
             except IOError as e:
                 print("error: can't open file for reading", file=sys.stderr)
                 print(e, file=sys.stderr)
@@ -138,10 +139,12 @@ def main():
                     print("error: no table of contents found", file=sys.stderr)
                     sys.exit(1)
 
+                stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='ignore')
+
                 if readable:
-                    print(pprint_toc(toc))
+                    print(pprint_toc(toc), file=stdout)
                 else:
-                    print(dump_toc(toc), end="")
+                    print(dump_toc(toc), end="", file=stdout)
                 sys.exit(0)
 
             # an input is given, so switch to input mode

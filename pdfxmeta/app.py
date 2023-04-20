@@ -3,6 +3,7 @@
 import getopt
 import sys
 import pdfxmeta
+import io
 
 from getopt import GetoptError
 from typing import Optional, TextIO
@@ -82,7 +83,7 @@ def main():
     ignore_case: bool = False
     page: Optional[int] = None
     auto_level: Optional[int] = None
-    out: TextIO = sys.stdout
+    out: TextIO = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='ignore')
 
     for o, a in opts:
         if o in ("-i", "--ignore-case"):
@@ -93,7 +94,7 @@ def main():
             auto_level = int(a)
         elif o in ("-o", "--out"):
             try:
-                out = open(a, "w")
+                out = open(a, "w", encoding='utf-8', errors='ignore')
             except IOError as e:
                 print("error: can't open file for writing", file=sys.stderr)
                 print(e, file=sys.stderr)

@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.3.1
+----------------
+
+Released April 20, 2023
+
+- Fix file encoding problems on Windows
+
 pdf.tocgen 1.3.0
 ----------------
 

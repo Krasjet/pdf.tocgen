@@ -4,7 +4,8 @@ from .fitzutils import (
     open_pdf,
     ToCEntry,
     dump_toc,
-    pprint_toc
+    pprint_toc,
+    get_file_encoding
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     'ToCEntry',
     'dump_toc',
     'pprint_toc',
+    'get_file_encoding'
 ]
