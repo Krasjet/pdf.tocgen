@@ -59,5 +59,5 @@ checkeq <(pdftocio -p "$SPEC/hastoc.pdf" < $SPEC/level2.toc) \
         "$SPEC/hastoc.toc"
 
 it "prints toc vpos when -v is set"
-checkeq <(pdftocio -v "$SPEC/hastoc.pdf") \
+checkeq <(pdftocio -p -v "$SPEC/hastoc.pdf") \
         "$SPEC/hastoc_v.toc"
