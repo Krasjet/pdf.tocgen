@@ -218,7 +218,7 @@ If you have obtained an existing recipe `rcp.toml` for `doc.pdf`, you could
 apply it and print the outline to `stdout` by
 
 ```console
-$ pdftocio doc.pdf < rcp.toml
+$ pdftocgen doc.pdf < rcp.toml
 "Level 1 heading 1" 1
     "Level 2 heading 1" 1
         "Level 3 heading 1" 2
