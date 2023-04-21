@@ -1,8 +1,8 @@
-"Section One" 1 235.0
-"Section Two" 1 562.0
-    "Subsection Two.One" 2 450.0
-"Section Three, with looong loooong looong title" 3 330.0
-    "Subsection Three.One, with even loooooooooooonger title, and probably even more" 3 616.0
-    "Subsection Three.Two" 4 509.0
-    "Subsection Three.Three" 5 125.0
-"The End" 5 361.0
+"Section One" 1 234.65998
+"Section Two" 1 562.148
+    "Subsection Two.One" 2 449.522
+"Section Three, with looong loooong looong title" 3 330.333
+    "Subsection Three.One, with even loooooooooooonger title, and probably even more" 3 616.444
+    "Subsection Three.Two" 4 509.298
+    "Subsection Three.Three" 5 124.802
+"The End" 5 361.387

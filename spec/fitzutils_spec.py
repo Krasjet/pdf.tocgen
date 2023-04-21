@@ -18,7 +18,7 @@ with description("open_pdf:") as self:
     with it("opens pdf file for reading"):
         with open_pdf(valid_file, False) as doc:
             assert doc is not None
-            assert doc.pageCount == 6
+            assert doc.page_count == 6
 
     with it("returns None if pdf file is invalid"):
         with open_pdf(invalid_file, False) as doc:

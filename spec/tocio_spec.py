@@ -15,23 +15,23 @@ with description("read_toc") as self:
         self.doc = fitz.open(level2)
         self.reference = fitz.open(hastoc)
         self.expect = [
-            ToCEntry(level=1, title='Section One', pagenum=1, vpos=235.0),
-            ToCEntry(level=1, title='Section Two', pagenum=1, vpos=562.0),
-            ToCEntry(level=2, title='Subsection Two.One', pagenum=2, vpos=450.0),
+            ToCEntry(level=1, title='Section One', pagenum=1, vpos=234.65998),
+            ToCEntry(level=1, title='Section Two', pagenum=1, vpos=562.148),
+            ToCEntry(level=2, title='Subsection Two.One', pagenum=2, vpos=449.522),
             ToCEntry(level=1,
                      title='Section Three, with looong loooong looong title',
                      pagenum=3,
-                     vpos=330.0),
+                     vpos=330.333),
             ToCEntry(level=2,
                      title='Subsection Three.One, '
                      'with even loooooooooooonger title, and probably even more',
                      pagenum=3,
-                     vpos=616.0),
+                     vpos=616.444),
             ToCEntry(level=2, title='Subsection Three.Two',
-                     pagenum=4, vpos=509.0),
+                     pagenum=4, vpos=509.298),
             ToCEntry(level=2, title='Subsection Three.Three',
-                     pagenum=5, vpos=125.0),
-            ToCEntry(level=1, title='The End', pagenum=5, vpos=361.0)
+                     pagenum=5, vpos=124.802),
+            ToCEntry(level=1, title='The End', pagenum=5, vpos=361.387)
         ]
 
     with it("reads pdf toc correctly"):
