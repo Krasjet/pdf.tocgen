@@ -1,6 +1,15 @@
 Change log
 ==========
 
+pdf.tocgen 1.3.3
+----------------
+
+Released April 21, 2023
+
+- Fix outdated dependencies
+- Add vpos output for pdftocio
+- Type stability enhancements
+
 pdf.tocgen 1.3.2
 ----------------
 
