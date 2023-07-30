@@ -82,6 +82,8 @@ First, use `pdfxmeta` to search for the metadata of headings, and generate
 $ pdfxmeta -p page -a 1 in.pdf "Section" >> recipe.toml
 $ pdfxmeta -p page -a 2 in.pdf "Subsection" >> recipe.toml
 ```
+Note that `page` needs to be replaced by the page number of the search keyword.
+
 The output `recipe.toml` file would contain several heading filters, each of
 which specifies the attribute of a heading at a particular level should have.
 
