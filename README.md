@@ -151,6 +151,10 @@ $ vim toc # edit
 $ pdftocio in.pdf < toc
 ```
 
+If no output file is specified with `-o FILE`, `pdftocio` will
+create a new PDF document ending in `_out.pdf`. In this example
+the output file is `in_out.pdf`.
+
 Each of the three programs has some extra functionalities. Use the `-h` option
 to see all the options you could pass in.
 
@@ -184,7 +188,7 @@ To write existing table of contents in a PDF to a file named `toc`:
 $ pdftocio doc.pdf > toc
 ```
 
-To write a `toc` file back to `doc.pdf`:
+To write a `toc` file to `doc_out.pdf`:
 
 ```console
 $ pdftocio doc.pdf < toc
