@@ -7,6 +7,7 @@ pdf.tocgen 1.3.4
 Unreleased
 
 - Add error messages for `--page` and invalid file
+- Fix KeyError when extracting ToC from some PDFs with pdftocio
 
 pdf.tocgen 1.3.3
 ----------------
