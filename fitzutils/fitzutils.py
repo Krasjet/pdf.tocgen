@@ -25,9 +25,10 @@ def open_pdf(path: str,
     """
     try:
         doc = fitz.open(path)
-    except:
-        # mupdf will print an error message here
+    except Exception as e:
         if exit_on_error:
+            print(f"error: fail to open {path}", file=sys.stderr)
+            print(e, file=sys.stderr)
             sys.exit(1)
         else:
             yield None

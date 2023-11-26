@@ -89,9 +89,17 @@ def main():
         if o in ("-i", "--ignore-case"):
             ignore_case = True
         elif o in ("-p", "--page"):
-            page = int(a)
+            try:
+                page = int(a)
+            except ValueError as e:
+                print("error: invalid page number", file=sys.stderr)
+                sys.exit(1)
         elif o in ("-a", "--auto"):
-            auto_level = int(a)
+            try:
+                auto_level = int(a)
+            except ValueError as e:
+                print("error: invalid level", file=sys.stderr)
+                sys.exit(1)
         elif o in ("-o", "--out"):
             try:
                 out = open(a, "w", encoding='utf-8', errors='ignore')

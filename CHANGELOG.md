@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 1.3.4
+----------------
+
+Unreleased
+
+- Add error messages for `--page` and invalid file
+
 pdf.tocgen 1.3.3
 ----------------
 
