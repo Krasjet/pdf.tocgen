@@ -139,6 +139,10 @@ importing it,
     $ vim toc # edit
     $ pdftocio in.pdf < toc
 
+If no output file is specified with `-o FILE`, `pdftocio` will
+create a new PDF document ending in `_out.pdf`. In this example
+the output file is `in_out.pdf`.
+
 Each of the three programs has some extra functionalities.
 Use the -h option to see all the options you could pass in.
 
