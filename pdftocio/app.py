@@ -94,7 +94,7 @@ def main():
         print(usage_s, file=sys.stderr)
         sys.exit(2)
 
-    toc_file: TextIO = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='ignore')
+    toc_file: TextIO = None
     print_toc: bool = False
     readable: bool = False
     out: Optional[str] = None
@@ -131,6 +131,8 @@ def main():
         print(usage_s, file=sys.stderr)
         sys.exit(1)
 
+    if not toc_file:
+        toc_file = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='ignore')
     path_in: str = args[0]
     # done parsing arguments
 

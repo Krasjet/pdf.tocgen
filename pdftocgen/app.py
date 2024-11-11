@@ -90,7 +90,7 @@ def main():
         print(usage_s, file=sys.stderr)
         sys.exit(2)
 
-    recipe_file: TextIO = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='ignore')
+    recipe_file: TextIO = None
     readable: bool = False
     vpos: bool = False
     out: TextIO = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='ignore')
@@ -129,6 +129,8 @@ def main():
         print(usage_s, file=sys.stderr)
         sys.exit(1)
 
+    if not recipe_file:
+        recipe_file = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8', errors='ignore')
     path_in: str = args[0]
     # done parsing arguments
 
