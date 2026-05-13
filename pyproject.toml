@@ -1,13 +1,16 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
 name = "pdf.tocgen"
-version = "1.3.4"
+dynamic = ["version"]
 description = "Automatically generate table of contents for pdf files"
-authors = ["krasjet"]
+requires-python = ">=3.7"
 license = "GPL-3.0-or-later"
 readme = "README.md"
-homepage = "https://krasjet.com/voice/pdf.tocgen/"
-repository = "https://github.com/Krasjet/pdf.tocgen"
 keywords = ["pdf", "cli"]
+authors = [{ name = "krasjet" }]
 
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -15,29 +18,46 @@ classifiers = [
   "Intended Audience :: End Users/Desktop"
 ]
 
-packages = [
-  { include = "pdfxmeta" },
-  { include = "pdftocgen" },
-  { include = "pdftocio" },
-  { include = "fitzutils" }
+dependencies = [
+  "PyMuPDF>=1.18.14",
+  "toml>=0.10.2",
+  "chardet>=5.1.0",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-PyMuPDF = "^1.18.14"
-toml = "^0.10.2"
-chardet = "^5.1.0"
+[project.optional-dependencies]
+dev = [
+  "mamba>=0.11.1",
+  "jedi>=0.17.2",
+  "pylint>=2.5.3",
+]
 
-[tool.poetry.dev-dependencies]
-pylint = "^2.5.3"
-jedi = "^0.17.2"
-mamba = "^0.11.1"
+[tool.hatch.version]
+path = "pdftocgen/__init__.py"
 
-[tool.poetry.scripts]
+[project.urls]
+Homepage = "https://krasjet.com/voice/pdf.tocgen/"
+Source = "https://github.com/Krasjet/pdf.tocgen"
+
+[project.scripts]
 pdfxmeta = "pdfxmeta.app:main"
 pdftocgen = "pdftocgen.app:main"
 pdftocio = "pdftocio.app:main"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.hatch.build.targets.wheel]
+packages = [
+  "pdfxmeta",
+  "pdftocgen",
+  "pdftocio",
+  "fitzutils"
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "pdfxmeta/",
+  "pdftocgen/",
+  "pdftocio/",
+  "fitzutils/",
+  "pyproject.toml",
+  "README.md",
+  "LICENSE*"
+]

@@ -1,6 +1,13 @@
 Change log
 ==========
 
+pdf.tocgen 2.0.0
+----------------
+
+Released TBD
+
+- Modernize codebase and remove Poetry dependency
+
 pdf.tocgen 1.3.4
 ----------------
 
