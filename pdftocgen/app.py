@@ -118,10 +118,12 @@ def main():
         elif o in ("-g", "--debug"):
             debug = True
         elif o in ("-V", "--version"):
-            print("pdftocgen", pdftocgen.__version__, file=sys.stderr)
+            print("pdftocgen", pdftocgen.__version__)
+            sys.stdout.flush()
             sys.exit()
         elif o in ("-h", "--help"):
-            print(help_s, file=sys.stderr)
+            print(help_s)
+            sys.stdout.flush()
             sys.exit()
 
     if len(args) < 1:
