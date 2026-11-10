@@ -44,6 +44,9 @@ it "generates readable toc"
 checkeq <(pdftocgen -H "$SPEC/level2.pdf" < "$SPEC/level2_recipe.toml") \
         "$SPEC/level2_h.toc"
 
+it "prints help to stdout instead of stderr"
+test -n "$(pdftocgen --help 2>/dev/null)" && echo "[✓]"
+
 printf "\npdftocio\n"
 
 tmpdir=$(mktemp -d)
